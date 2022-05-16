@@ -20,5 +20,6 @@ def draw_spiral(spiral_x, spiral_y):
     # spiral_x, spiral_y = spiral()
     # print(spiral_x)
     # print(spiral_y)
+
     for i in range(len(spiral_x)):
-        pygame.draw.circle(WIN, (0, 0, 0), (spiral_x[i], spiral_y[i]), 1, 1)
+        pygame.draw.circle(window, (0, 0, 0), (spiral_x[i], spiral_y[i]), 1, 1)

@@ -4,6 +4,7 @@ from pygame import *
 from spiral import *
 
 pygame.init()
+clock = time.Clock()
 
 # setting up window size
 WIN_X = int(1000)
@@ -12,23 +13,24 @@ WIN_X = int(1000)
 WIN_Y = int(750)
 
 # set the screen
-WIN = pygame.display.set_mode((WIN_X, WIN_Y))
+window = pygame.display.set_mode((WIN_X, WIN_Y))
 
 
 def main():
+    x_s, y_s = spiral()
 
     while True:  # main game loop
+        clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # if you quit pygame
                 pygame.quit()  # quit pygame
                 sys.exit()  # exit the system
 
-        WIN.fill((255, 255, 255))
+        window.fill((255, 255, 255))
 
-        x_s, y_s = spiral()
         draw_spiral(x_s, y_s)
 
-        follow_lines(horizRoad, xmove, added, vertRoad)
+        follow_lines()
 
         pygame.display.update()
 
