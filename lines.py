@@ -1,17 +1,19 @@
+import pygame
+
 from main import *
 
 
 coordinates = [100, 100]
 
-road1 = pygame.draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
+road1 = draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
 
-road2 = pygame.draw.line(window, (0, 0, 0), (100, 300), (900, 300), 1)
+road2 = draw.line(window, (0, 0, 0), (100, 300), (900, 300), 1)
 
-road3 = pygame.draw.line(window, (0, 0, 0), (900, 100), (900, 300), 1)
+road3 = draw.line(window, (0, 0, 0), (900, 100), (900, 300), 1)
 
-road4 = pygame.draw.line(window, (0, 0, 0), (100, 300), (100, 500), 1)
+road4 = draw.line(window, (0, 0, 0), (100, 300), (100, 500), 1)
 
-road5 = pygame.draw.line(window, (0, 0, 0), (100, 500), (900, 500), 1)
+road5 = draw.line(window, (0, 0, 0), (100, 500), (900, 500), 1)
 
 horizRoads = [road1, road2, road5]
 vertRoads = [road3, road4]
@@ -28,7 +30,7 @@ xmove = 1
 
 def follow_lines():
     global added, horizRoad, xmove, vertRoad
-    road1 = pygame.draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
+    road1 = draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
 
     road2 = pygame.draw.line(window, (0, 0, 0), (101, 300), (901, 300), 1)
 
@@ -38,7 +40,11 @@ def follow_lines():
 
     road5 = pygame.draw.line(window, (0, 0, 0), (100, 500), (900, 500), 1)
 
-    circle = pygame.draw.circle(window, (0, 0, 0), coordinates, 5)
+    ball = pygame.image.load("1.png")
+    window.blit(ball, coordinates)
+    circle = ball.get_rect()
+    circle.center = coordinates
+    # pygame.draw.circle(window, (0, 0, 0), coordinates, 5)
 
     if circle.colliderect(horizRoads[horizRoad]):
         coordinates[0] += xmove

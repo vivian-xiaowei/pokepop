@@ -34,8 +34,6 @@ def main():
 
         pygame.display.update()
 
-    # does this work
-
 
 if __name__ == "__main__":
     main()
