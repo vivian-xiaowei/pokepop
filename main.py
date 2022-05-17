@@ -9,13 +9,14 @@ def main():
     x_s, y_s = spiral()
     # straight line angle variable
     pos = 0
-    # rolling_balls = pygame.sprite.Group()
-    # first_ball = Ball(sprites[0][0])
-    # rolling_balls.add([first_ball])
+    first_ball = pokeballs(ball_images[0][0], 0, 1)
 
     while True:  # main game loop
         clock.tick(60)
         window.fill((255, 255, 255))
+        first_ball.move(1, 0.5)
+        first_ball.roll(0.1)
+        first_ball.draw(window)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # if you quit pygame
@@ -27,8 +28,6 @@ def main():
         pos += 0.15
         if pos >= 8:
             pos = 0
-
-        # rolling_balls.draw()
 
         # draw the spiral dots
         draw_spiral(x_s, y_s)

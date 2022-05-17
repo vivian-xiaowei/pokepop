@@ -36,11 +36,10 @@ def follow_lines(colour, pos):
     pygame.draw.line(window, (0, 0, 0), (100, 299), (100, 501), 1)
     pygame.draw.line(window, (0, 0, 0), (100, 500), (900, 500), 1)
 
-    rolling = pygame.transform.rotate(sprites[colour][pos], 90)
+    rolling = pygame.transform.rotate(ball_images[colour][pos], 90)
     window.blit(rolling, (int(coordinates[0]), int(coordinates[1])))
     circle = rolling.get_rect()
     circle.center = coordinates
-    # pygame.draw.circle(window, (0, 0, 0), coordinates, 5)
 
     if circle.colliderect(horizRoads[horizRoad]):
         coordinates[0] += xmove
@@ -58,7 +57,3 @@ def follow_lines(colour, pos):
 
     if circle.colliderect(horizRoads[horizRoad]) and circle.colliderect(vertRoads[vertRoad]):
         added = False
-
-
-def draw():
-    window.blit(sprites[0][0], (0, 0))
