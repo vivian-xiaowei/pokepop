@@ -2,7 +2,6 @@ import pygame
 
 from main import *
 
-
 coordinates = [100, 100]
 
 road1 = draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
@@ -40,7 +39,7 @@ def follow_lines():
 
     road5 = pygame.draw.line(window, (0, 0, 0), (100, 500), (900, 500), 1)
 
-    ball = pygame.image.load("1.png")
+    ball = pygame.image.load("balls/00.png")
     window.blit(ball, coordinates)
     circle = ball.get_rect()
     circle.center = coordinates
@@ -53,12 +52,12 @@ def follow_lines():
             horizRoad += 1
             xmove *= -1
             added = True
-    if circle.colliderect(vertRoads[vertRoad]) == True:
+    if circle.colliderect(vertRoads[vertRoad]):
         coordinates[1] += 1
     else:
         if vertRoad + 1 < len(vertRoads) and added == False:
             vertRoad += 1
             added = True
 
-    if circle.colliderect(horizRoads[horizRoad]) == True and circle.colliderect(vertRoads[vertRoad]) == True:
+    if circle.colliderect(horizRoads[horizRoad]) and circle.colliderect(vertRoads[vertRoad]):
         added = False
