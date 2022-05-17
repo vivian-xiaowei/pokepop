@@ -1,6 +1,20 @@
+import sys
+import pygame
+from pygame import *
 import math
-from main import *
-from lines import *
+# from lines import *
+
+pygame.init()
+clock = time.Clock()
+
+# setting up window size
+WIN_X = int(1000)
+
+# how tall the screen is going to be
+WIN_Y = int(750)
+
+# set the screen
+window = pygame.display.set_mode((WIN_X, WIN_Y))
 
 
 def spiral():
