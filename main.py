@@ -8,7 +8,7 @@ def main():
     # spiral variable
     x_s, y_s = spiral()
     # straight line angle variable
-    pos = 0
+    ball_list
     first_ball = pokeballs(ball_images[0][0], 100, 100)
 
     while True:  # main game loop
@@ -20,15 +20,11 @@ def main():
                 pygame.quit()  # quit pygame
                 sys.exit()  # exit the system
 
-
+        # change the ball position base on the collision with lines
         first_ball.pos = follow_lines(first_ball.pos, first_ball.rect)
         first_ball.rect.center = first_ball.pos
         first_ball.roll(0.1)
         first_ball.draw(window)
-
-        pos += 0.15
-        if pos >= 8:
-            pos = 0
 
         # draw the spiral dots
         draw_spiral(x_s, y_s)
