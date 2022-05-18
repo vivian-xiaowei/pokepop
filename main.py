@@ -11,7 +11,7 @@ def main():
     ball_list = []
     for i in range(5):
         ball_list.append(pokeballs(ball_images[0][0], 600 + i * 22, 100))
-    # first_ball = pokeballs(ball_images[0][0], 100, 100)
+    # ball = pokeballs(ball_images[0][0], 100, 100)
 
     while True:  # main game loop
         clock.tick(60)
@@ -23,13 +23,13 @@ def main():
                 sys.exit()  # exit the system
 
         # change the ball position base on the collision with lines
-        for first_ball in ball_list:
-            first_ball.rect.center = first_ball.pos
-            print(first_ball.rect.center)
-            first_ball.pos = follow_lines(first_ball.pos, first_ball.rect)
+        for ball in ball_list:
+            ball.rect.center = ball.pos
+            print(ball.rect.center)
+            ball.pos, ball.road_h, ball.road_v = follow_lines(ball.pos, ball.rect, ball.road_h, ball.road_v)
 
-            first_ball.roll(0.1)
-            first_ball.draw(window)
+            ball.roll(0.1)
+            ball.draw(window)
 
         # draw the spiral dots
         draw_spiral(x_s, y_s)

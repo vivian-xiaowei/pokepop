@@ -20,16 +20,13 @@ vertRoads = [road3, road4]
 
 added = True
 
-horizRoad = 0
-vertRoad = 0
-
 road = road1
 
 xmove = 0.8
 
 
-def follow_lines(ball_pos, ball_rect):
-    global added, horizRoad, xmove, vertRoad
+def follow_lines(ball_pos, ball_rect, horizRoad, vertRoad):
+    global added, xmove
     pygame.draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
     pygame.draw.line(window, (0, 0, 0), (101, 300), (901, 300), 1)
     pygame.draw.line(window, (0, 0, 0), (900, 99), (900, 301), 1)
@@ -57,4 +54,4 @@ def follow_lines(ball_pos, ball_rect):
     if ball_rect.colliderect(horizRoads[horizRoad]) and ball_rect.colliderect(vertRoads[vertRoad]):
         added = False
 
-    return ball_pos
+    return ball_pos, horizRoad, vertRoad
