@@ -24,8 +24,10 @@ def main():
 
         # change the ball position base on the collision with lines
         for first_ball in ball_list:
-            first_ball.pos = follow_lines(first_ball.pos, first_ball.rect)
             first_ball.rect.center = first_ball.pos
+            print(first_ball.rect.center)
+            first_ball.pos = follow_lines(first_ball.pos, first_ball.rect)
+
             first_ball.roll(0.1)
             first_ball.draw(window)
 

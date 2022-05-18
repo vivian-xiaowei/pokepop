@@ -40,7 +40,6 @@ def follow_lines(ball_pos, ball_rect):
     # window.blit(rolling, (int(coordinates[0]), int(coordinates[1])))
     # circle = rolling.get_rect()
     # circle.center = coordinates
-    print(ball_rect.colliderect(horizRoads[horizRoad]))
     if ball_rect.colliderect(horizRoads[horizRoad]):
         ball_pos[0] += xmove
     else:
