@@ -25,8 +25,8 @@ road = road1
 xmove = 0.8
 
 
-def follow_lines(ball_pos, ball_rect, horizRoad, vertRoad):
-    global added, xmove
+def follow_lines(ball_pos, ball_rect, horizRoad, vertRoad, xmove):
+    global added
     pygame.draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
     pygame.draw.line(window, (0, 0, 0), (101, 300), (901, 300), 1)
     pygame.draw.line(window, (0, 0, 0), (900, 99), (900, 301), 1)
@@ -37,6 +37,7 @@ def follow_lines(ball_pos, ball_rect, horizRoad, vertRoad):
     # window.blit(rolling, (int(coordinates[0]), int(coordinates[1])))
     # circle = rolling.get_rect()
     # circle.center = coordinates
+    print(horizRoad)
     if ball_rect.colliderect(horizRoads[horizRoad]):
         ball_pos[0] += xmove
     else:
@@ -54,4 +55,4 @@ def follow_lines(ball_pos, ball_rect, horizRoad, vertRoad):
     if ball_rect.colliderect(horizRoads[horizRoad]) and ball_rect.colliderect(vertRoads[vertRoad]):
         added = False
 
-    return ball_pos, horizRoad, vertRoad
+    return ball_pos, horizRoad, vertRoad, xmove
