@@ -28,7 +28,7 @@ road = road1
 xmove = 0.8
 
 
-def follow_lines(colour, pos, ball_pos, ball_rect):
+def follow_lines(ball_pos, ball_rect):
     global added, horizRoad, xmove, vertRoad
     pygame.draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
     pygame.draw.line(window, (0, 0, 0), (101, 300), (901, 300), 1)

@@ -14,18 +14,17 @@ def main():
     while True:  # main game loop
         clock.tick(60)
         window.fill((255, 255, 255))
-        first_ball.roll(0.1)
-        first_ball.draw(window)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # if you quit pygame
                 pygame.quit()  # quit pygame
                 sys.exit()  # exit the system
 
-        first_ball.pos = follow_lines(0, int(pos), first_ball.pos, first_ball.rect)
-        first_ball.x = first_ball.pos[0]
-        first_ball.y = first_ball.pos[1]
+
+        first_ball.pos = follow_lines(first_ball.pos, first_ball.rect)
         first_ball.rect.center = first_ball.pos
+        first_ball.roll(0.1)
+        first_ball.draw(window)
 
         pos += 0.15
         if pos >= 8:

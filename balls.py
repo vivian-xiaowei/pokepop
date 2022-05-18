@@ -10,16 +10,16 @@ for i in range(7):
         ball_images[i].append(pygame.image.load("balls/" + str(i) + str(j) + ".png"))
 
 
+# pokeball class with the image, position, angle of rotation and rect for collision
 class pokeballs:
     def __init__(self, ball_image, x_pos, y_pos):
         self.ball_image = ball_image
         self.rect = self.ball_image.get_rect()
         self.angle = 0
-        self.x = x_pos
-        self.y = y_pos
         self.pos = [x_pos, y_pos]
         self.rect.center = self.pos
 
+    # loop through the images
     def roll(self, speed):
         self.angle += speed
         if int(self.angle) >= 8:
