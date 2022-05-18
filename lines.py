@@ -28,7 +28,7 @@ road = road1
 xmove = 0.8
 
 
-def follow_lines(colour, pos):
+def follow_lines(colour, pos, ball_pos, ball_rect):
     global added, horizRoad, xmove, vertRoad
     pygame.draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
     pygame.draw.line(window, (0, 0, 0), (101, 300), (901, 300), 1)
@@ -36,24 +36,26 @@ def follow_lines(colour, pos):
     pygame.draw.line(window, (0, 0, 0), (100, 299), (100, 501), 1)
     pygame.draw.line(window, (0, 0, 0), (100, 500), (900, 500), 1)
 
-    rolling = pygame.transform.rotate(ball_images[colour][pos], 90)
-    window.blit(rolling, (int(coordinates[0]), int(coordinates[1])))
-    circle = rolling.get_rect()
-    circle.center = coordinates
-
-    if circle.colliderect(horizRoads[horizRoad]):
-        coordinates[0] += xmove
+    # rolling = pygame.transform.rotate(ball_images[colour][pos], 90)
+    # window.blit(rolling, (int(coordinates[0]), int(coordinates[1])))
+    # circle = rolling.get_rect()
+    # circle.center = coordinates
+    print(ball_rect.colliderect(horizRoads[horizRoad]))
+    if ball_rect.colliderect(horizRoads[horizRoad]):
+        ball_pos[0] += xmove
     else:
         if horizRoad + 1 < len(horizRoads) and added == False:
             horizRoad += 1
             xmove *= -1
             added = True
-    if circle.colliderect(vertRoads[vertRoad]):
-        coordinates[1] += 1
+    if ball_rect.colliderect(vertRoads[vertRoad]):
+        ball_pos[1] += 1
     else:
         if vertRoad + 1 < len(vertRoads) and added == False:
             vertRoad += 1
             added = True
 
-    if circle.colliderect(horizRoads[horizRoad]) and circle.colliderect(vertRoads[vertRoad]):
+    if ball_rect.colliderect(horizRoads[horizRoad]) and ball_rect.colliderect(vertRoads[vertRoad]):
         added = False
+
+    return ball_pos

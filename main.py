@@ -9,12 +9,11 @@ def main():
     x_s, y_s = spiral()
     # straight line angle variable
     pos = 0
-    first_ball = pokeballs(ball_images[0][0], 0, 1)
+    first_ball = pokeballs(ball_images[0][0], 100, 100)
 
     while True:  # main game loop
         clock.tick(60)
         window.fill((255, 255, 255))
-        first_ball.move(1, 0.5)
         first_ball.roll(0.1)
         first_ball.draw(window)
 
@@ -23,7 +22,10 @@ def main():
                 pygame.quit()  # quit pygame
                 sys.exit()  # exit the system
 
-        follow_lines(0, int(pos))
+        first_ball.pos = follow_lines(0, int(pos), first_ball.pos, first_ball.rect)
+        first_ball.x = first_ball.pos[0]
+        first_ball.y = first_ball.pos[1]
+        first_ball.rect.center = first_ball.pos
 
         pos += 0.15
         if pos >= 8:
