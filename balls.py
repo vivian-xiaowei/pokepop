@@ -17,6 +17,7 @@ class pokeballs:
         self.ball_image = ball_images[ball_type][0]
         self.rect = self.ball_image.get_rect()
         self.angle = 0
+        self.rotation = 0
         self.pos = [x_pos, y_pos]
         self.rect.center = self.pos
         self.road_h = 0
@@ -33,7 +34,14 @@ class pokeballs:
 
     def move(self, direction, speed):
         self.pos[direction] += speed
+        print(self.x_move > 0 and direction == 0)
+        if self.x_move > 0 and direction == 0:
+            self.rotation = 90
+        elif self.x_move < 0 and direction == 0:
+            self.rotation = 270
+        elif self.y_move > 0 and direction == 1:
+            self.rotation = 0
 
     def draw(self, window):
+        self.ball_image = pygame.transform.rotate(self.ball_image, self.rotation)
         window.blit(self.ball_image, self.pos)
-        
