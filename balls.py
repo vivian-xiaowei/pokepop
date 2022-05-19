@@ -20,7 +20,8 @@ class pokeballs:
         self.rect.center = self.pos
         self.road_h = 0
         self.road_v = 0
-        self.move = 0.8
+        self.x_move = 0.8
+        self.y_move = 0.8
 
     # loop through the images
     def roll(self, speed):
