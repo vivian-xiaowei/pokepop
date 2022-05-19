@@ -10,7 +10,7 @@ def main():
     # straight line angle variable
     ball_list = []
     for i in range(5):
-        ball_list.append(pokeballs(0, 600 + i * 22, 100))
+        ball_list.append(pokeballs(0, 700 + i * 22, 100))
 
     while True:  # main game loop
         clock.tick(60)
@@ -25,7 +25,7 @@ def main():
         for ball in ball_list:
             ball.rect.center = ball.pos
             follow_lines(ball)
-            ball.roll(0.1)
+            ball.roll(0.08)
             ball.draw(window)
 
         # draw the spiral dots
