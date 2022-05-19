@@ -10,8 +10,7 @@ def main():
     # straight line angle variable
     ball_list = []
     for i in range(5):
-        ball_list.append(pokeballs(ball_images[0][0], 600 + i * 22, 100))
-    # ball = pokeballs(ball_images[0][0], 100, 100)
+        ball_list.append(pokeballs(0, 600 + i * 22, 100))
 
     while True:  # main game loop
         clock.tick(60)
@@ -22,7 +21,7 @@ def main():
                 pygame.quit()  # quit pygame
                 sys.exit()  # exit the system
 
-        # change the ball position base on the collision with lines
+        # change the ball position base on the collision with straight lines
         for ball in ball_list:
             ball.rect.center = ball.pos
             ball.pos, ball.road_h, ball.road_v, ball.x_move = follow_lines(ball.pos, ball.rect, ball.road_h, ball.road_v, ball.x_move)
