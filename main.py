@@ -7,10 +7,15 @@ from balls import *
 def main():
     # spiral variable
     x_s, y_s = spiral()
-    # straight line angle variable
+    # straight line rotate variable
     ball_list = []
+    pic = pygame.sprite.Sprite()
+    pic.rect = Rect((100, 110), (22, 22))
+    pic.image = pygame.image.load("balls/00.png")
+    for i in range(10):
+        ball_list.append(pokeballs(1, 700 - i * 22, 100, 0))
     for i in range(5):
-        ball_list.append(pokeballs(0, 700 + i * 22, 100))
+        ball_list.append(pokeballs(4, 700 - 220 - i * 22, 100, 0))
 
     while True:  # main game loop
         clock.tick(60)
@@ -25,11 +30,14 @@ def main():
         for ball in ball_list:
             ball.rect.center = ball.pos
             follow_lines(ball)
-            ball.roll(0.08)
             ball.draw(window)
 
         # draw the spiral dots
-        draw_spiral(x_s, y_s)
+        spiral_lines = draw_spiral(x_s, y_s)
+        window.blit(pic.image, pic.rect.topleft)
+        for i in range(len(spiral_lines)):
+            if pic.rect.colliderect(spiral_lines[i]):
+                print(i)
 
         pygame.display.update()
 

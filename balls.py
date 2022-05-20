@@ -1,8 +1,5 @@
-from typing import Any
-
 import pygame
-from pygame import *
-import pygame.sprite
+from random import *
 
 ball_images = [[] for i in range(7)]
 for i in range(7):
@@ -10,37 +7,39 @@ for i in range(7):
         ball_images[i].append(pygame.image.load("balls/" + str(i) + str(j) + ".png"))
 
 
-# pokeball class with the ball_image, position, angle of rotation and rect for collision
+# pokeball class with the ball_image, position, rotate of angle and rect for collision
 class pokeballs:
-    def __init__(self, ball_type, x_pos, y_pos):
+    def __init__(self, ball_type, x_pos, y_pos, map):
         self.colour = ball_type
-        self.ball_image = ball_images[ball_type][0]
+        self.type = ball_type
+        self.rotate = 0
+        self.ball_image = ball_images[self.type][self.rotate]
         self.rect = self.ball_image.get_rect()
         self.angle = 0
-        self.rotation = 0
         self.pos = [x_pos, y_pos]
         self.rect.center = self.pos
-        self.road_h = 0
-        self.road_v = 0
+        self.road_h, self.road_v = 0, 0
+        # if map == 0:
         self.x_move = 0.3
         self.y_move = 0.3
 
     # loop through the images
     def roll(self, speed):
-        self.angle += speed
-        if int(self.angle) >= 8:
-            self.angle = 0
-        self.ball_image = ball_images[0][int(self.angle)]
+        self.rotate += speed
+        if int(self.rotate) >= 8:
+            self.rotate = 0
+        self.ball_image = ball_images[self.type][int(self.rotate)]
 
     def one_direction_move(self, direction, speed):
         self.pos[direction] += speed
         if self.x_move > 0 and direction == 0:
-            self.rotation = 90
+            self.angle = 90
         elif self.x_move < 0 and direction == 0:
-            self.rotation = 270
+            self.angle = 270
         elif self.y_move > 0 and direction == 1:
-            self.rotation = 0
+            self.angle = 0
+        self.roll(abs(self.x_move)/3.75)
 
     def draw(self, window):
-        self.ball_image = pygame.transform.rotate(self.ball_image, self.rotation)
+        self.ball_image = pygame.transform.rotate(self.ball_image, self.angle)
         window.blit(self.ball_image, self.pos)

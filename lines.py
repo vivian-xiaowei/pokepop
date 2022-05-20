@@ -17,6 +17,7 @@ road5 = draw.line(window, (0, 0, 0), (100, 500), (900, 500), 1)
 horizRoads = [road1, road2, road5]
 vertRoads = [road3, road4]
 
+
 def follow_lines(ball):
     pygame.draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
     pygame.draw.line(window, (0, 0, 0), (101, 300), (901, 300), 1)
