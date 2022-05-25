@@ -6,16 +6,16 @@ from balls import *
 
 def main():
     # spiral variable
-    x_s, y_s = spiral()
+    x_s, y_s, a = spiral()
     # straight line rotate variable
     ball_list = []
     pic = pygame.sprite.Sprite()
-    pic.rect = Rect((500, 150), (22, 22))
+    pic.rect = Rect((600, 160), (22, 22))
     pic.image = pygame.image.load("balls/00.png")
     for i in range(10):
-        ball_list.append(pokeballs(1, 700 - i * 22, 100))
+        ball_list.append(pokeballs(1, 700 - i * 22, 100, 1))
     for i in range(5):
-        ball_list.append(pokeballs(4, 700 - 220 - i * 22, 100))
+        ball_list.append(pokeballs(4, 700 - 220 - i * 22, 100, 1))
 
     while True:  # main game loop
         clock.tick(60)
@@ -28,22 +28,23 @@ def main():
 
         # draw the spiral lines
         spiral_lines, slope = draw_spiral(x_s, y_s)
-        window.blit(pic.image, pic.rect.topleft)
-        for i in range(len(spiral_lines)):
-            if pic.rect.colliderect(spiral_lines[i]):
-                x, y = pic.rect.topleft
-                print(slope[i][0], slope[i][1])
-                x += slope[i][0]
-                y += slope[i][1]
-                pic.rect.topleft = x, y
+        # window.blit(pic.image, pic.rect.center)
+        # for i in range(len(spiral_lines)):
+        #     if pic.rect.colliderect(spiral_lines[i]):
+        #         x, y = pic.rect.center
+        #         # print(slope[i][0], slope[i][1])
+        #         x += slope[i][0]
+        #         y += slope[i][1]
+        #         print(x, y)
+        #         pic.rect.center = x, y
 
         # change the ball position base on the collision with straight lines
-        # for ball in ball_list:
-        #     ball.rect.center = ball.pos
-        #     # follow_lines(ball)
-        #     pygame.draw.circle(window, (0, 0, 0), ball.pos, 5)
-        #     follow_spiral(ball, spiral_lines, slope)
-        #     ball.draw(window)
+        for count in range(len(ball_list)):
+            ball = ball_list[count]
+            ball.rect.center = ball.pos
+            # follow_lines(ball)
+            follow_spiral(ball, slope)
+            ball.draw(window)
 
         pygame.display.update()
 

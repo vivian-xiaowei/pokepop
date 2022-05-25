@@ -26,10 +26,10 @@ def follow_lines(ball):
     pygame.draw.line(window, (0, 0, 0), (100, 500), (900, 500), 1)
 
     if ball.rect.colliderect(horizRoads[ball.road_h]):
-        ball.one_direction_move(0, ball.x_move)
+        ball.move(0, ball.x_move)
 
     if ball.rect.colliderect(vertRoads[ball.road_v]) or (ball.road_v >= 1 and ball.rect.colliderect(vertRoads[ball.road_v - 1])):
-        ball.one_direction_move(1, ball.y_move)
+        ball.move(1, ball.y_move)
 
     if ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(vertRoads[ball.road_v]):
         if ball.road_v + 1 < len(vertRoads):
@@ -53,9 +53,9 @@ def map2_follow_lines(ball):
     horizRoads=[road1, road2, road3, road4]
 
     if ball.rect.colliderect(horizRoads[ball.road_h]):
-        ball.one_direction_move(0, ball.x_move)
+        ball.move(0, ball.x_move)
 
-    if ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(roadVert):
-        yCoordinate=ball.positionY()
-        ball.changePos(100, yCoordinate+100)
-        ball.road_h+=1
+    if ball.pos[0] >= 900:
+        yCoordinate = ball.positionY()
+        ball.changePos(100, yCoordinate + 120)
+        ball.road_h += 1

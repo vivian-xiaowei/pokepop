@@ -21,9 +21,11 @@ class pokeballs:
         self.pos = [x_pos, y_pos]
         self.rect.center = self.pos
         self.road_h, self.road_v = 0, 0
-        # if map == 0:
         self.x_move = 0.3
         self.y_move = 0.3
+        # else:
+        #     self.distance = 300
+        #     self.circle_angle = 0
 
     # loop through the images
     def roll(self, speed):
@@ -32,7 +34,7 @@ class pokeballs:
             self.rotate = 0
         self.ball_image = ball_images[self.type][int(self.rotate)]
 
-    def one_direction_move(self, direction, speed):
+    def move(self, direction, speed):
         self.pos[direction] += speed
         if self.x_move > 0 and direction == 0:
             self.angle = 90
@@ -40,7 +42,6 @@ class pokeballs:
             self.angle = 270
         elif self.y_move > 0 and direction == 1:
             self.angle = 0
-        print(self.x_move)
         self.roll(abs(self.x_move) / 3.75)
 
     def two_direction_move(self):
