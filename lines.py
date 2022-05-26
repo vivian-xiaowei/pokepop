@@ -8,22 +8,22 @@ road1 = draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
 # middle horizontal
 road2 = draw.line(window, (0, 0, 0), (100, 300), (900, 300), 1)
 # bottom horizontal
-road3 = draw.line(window, (0, 0, 0), (900, 100), (900, 300), 1)
+road5 = draw.line(window, (0, 0, 0), (100, 600), (900, 600), 1)
 # higher vertical
-road4 = draw.line(window, (0, 0, 0), (100, 300), (100, 500), 1)
+road3 = draw.line(window, (0, 0, 0), (900, 100), (900, 300), 1)
 # lower vertical
-road5 = draw.line(window, (0, 0, 0), (100, 500), (900, 500), 1)
+road4 = draw.line(window, (0, 0, 0), (100, 300), (100, 600), 1)
 
 horizRoads = [road1, road2, road5]
 vertRoads = [road3, road4]
 
 
-def follow_lines(ball):
-    pygame.draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
-    pygame.draw.line(window, (0, 0, 0), (101, 300), (901, 300), 1)
-    pygame.draw.line(window, (0, 0, 0), (900, 99), (900, 301), 1)
-    pygame.draw.line(window, (0, 0, 0), (100, 299), (100, 501), 1)
-    pygame.draw.line(window, (0, 0, 0), (100, 500), (900, 500), 1)
+def map1(ball):
+    # pygame.draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
+    # pygame.draw.line(window, (0, 0, 0), (101, 300), (901, 300), 1)
+    # pygame.draw.line(window, (0, 0, 0), (900, 99), (900, 301), 1)
+    # pygame.draw.line(window, (0, 0, 0), (100, 299), (100, 501), 1)
+    # pygame.draw.line(window, (0, 0, 0), (100, 500), (900, 500), 1)
 
     if ball.rect.colliderect(horizRoads[ball.road_h]):
         ball.move(0, ball.x_move)
@@ -38,7 +38,7 @@ def follow_lines(ball):
             ball.road_h += 1
             ball.x_move *= -1
 
-def map2_follow_lines(ball):
+def map2(ball):
 
     roadVert = pygame.draw.line(window, (255, 255, 255), (900, 100), (900, 500), 1)
 
@@ -55,7 +55,7 @@ def map2_follow_lines(ball):
     if ball.rect.colliderect(horizRoads[ball.road_h]):
         ball.move(0, ball.x_move)
 
-    if ball.pos[0] >= 900:
+    if ball.pos[0] >= 900 and ball.road_h < 3:
         yCoordinate = ball.positionY()
         ball.changePos(100, yCoordinate + 120)
         ball.road_h += 1
