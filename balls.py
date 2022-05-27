@@ -7,14 +7,30 @@ from math import *
 ball_images = [[] for i in range(7)]
 for i in range(7):
     for j in range(8):
-        ball_images[i].append(pygame.image.load("balls/" + str(i) + str(j) + ".png"))
+        image = pygame.image.load("balls/" + str(i) + str(j) + ".png")
+        ball_images[i].append(pygame.transform.scale(image, (30, 30)))
+
+
+balls_exist = set()
+
+
+def generate_ball(level):
+    length = 4
+    ball = []
+    for i in range(length):
+        type = randint(0, 6)
+        balls_exist.add(type)
+        for j in range(5 - level):
+            ball.append(pokeballs(type, 700 - (i * 5 + j) * 30, 100))
+    print(balls_exist)
+    return ball
 
 
 # pokeball class with the ball_image, position, rotate of angle and rect for collision
 class pokeballs:
     def __init__(self, ball_type, x_pos, y_pos):
         self.type = ball_type
-        self.rotate = randint(0, 2) # the rotation of the ball
+        self.rotate = randint(0, 2)  # the rotation of the ball
         self.ball_image = ball_images[self.type][self.rotate]
         self.rect = self.ball_image.get_rect()
         self.angle = 0  # the angle of the image
@@ -58,4 +74,3 @@ class pokeballs:
 
     def collide(self, window, x1, y1, x2, y2):
         return self.rect.colliderect(pygame.draw.line(window, (0, 0, 0), (x1, y1), (x2, y2)))
-

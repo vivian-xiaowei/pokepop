@@ -2,6 +2,7 @@ import pygame.sprite
 
 from lines import *
 from balls import *
+from shooter import *
 
 
 def main():
@@ -9,13 +10,12 @@ def main():
     x_s, y_s, a = spiral()
     ball_list = []
     map = 0
-    for i in range(10):
-        ball_list.append(pokeballs(1, 550 - i * 22, 100))
-    for i in range(5):
-        ball_list.append(pokeballs(4, 550 - 220 - i * 22, 100))
+    ball_list = generate_ball(0)
+    front = pokeballs(randint(0, 6), 0, 0)
+    back = pokeballs(randint(0, 6), 0, 0)
 
     while True:  # main game loop
-        clock.tick(300)
+        clock.tick(60)
         window.fill((255, 255, 255))
 
         for event in pygame.event.get():
@@ -34,6 +34,7 @@ def main():
             elif map == 2:
                 map2(ball)
             ball.draw(window)
+        draw_shooter(map, window, front, back)
 
         pygame.display.update()
 
