@@ -1,5 +1,5 @@
 import math
-import pygame
+from math import *
 from balls import *
 
 

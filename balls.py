@@ -1,8 +1,5 @@
-import math
-
 import pygame
 from random import *
-from math import *
 
 ball_images = [[] for i in range(7)]
 for i in range(7):
@@ -15,14 +12,14 @@ balls_exist = set()
 
 
 def generate_ball(level):
-    length = 4
     ball = []
-    for i in range(length):
+    position = 0
+    while position <= 25:
         type = randint(0, 6)
         balls_exist.add(type)
-        for j in range(5 - level):
-            ball.append(pokeballs(type, 700 - (i * 5 + j) * 30, 100))
-    print(balls_exist)
+        for j in range(randint(1, 6 - level)):
+            ball.append(pokeballs(type, 700 - position * 30, 100))
+            position += 1
     return ball
 
 
@@ -37,8 +34,8 @@ class pokeballs:
         self.pos = [x_pos, y_pos]
         self.rect.center = self.pos
         self.road_h, self.road_v = 0, 0
-        self.x_move = 0.3
-        self.y_move = 0.3
+        self.x_move = .3
+        self.y_move = .3
 
     # loop through the images
     def roll(self, speed):
@@ -56,11 +53,6 @@ class pokeballs:
         elif self.y_move > 0 and direction == 1:
             self.angle = 0
         self.roll(abs(self.x_move) / 3.75)
-
-    def two_direction_move(self):
-        self.pos[0] -= self.x_move
-        self.pos[1] -= self.y_move
-        self.angle = asin(self.x_move)
 
     def changePos(self, x, y):
         self.pos = [x, y]

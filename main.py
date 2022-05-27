@@ -1,14 +1,10 @@
 import pygame.sprite
 
 from lines import *
-from balls import *
 from shooter import *
 
 
 def main():
-    # spiral variable
-    x_s, y_s, a = spiral()
-    ball_list = []
     map = 0
     ball_list = generate_ball(0)
     front = pokeballs(randint(0, 6), 0, 0)
@@ -27,12 +23,15 @@ def main():
         for count in range(len(ball_list)):
             ball = ball_list[count]
             ball.rect.center = ball.pos
-            if map == 0:
-                map1(ball)
-            elif map == 1:
-                follow_spiral(ball, a, x_s, y_s)
-            elif map == 2:
-                map2(ball)
+            if ball.pos[0] < 100:
+                ball.move(0, ball.x_move)
+            else:
+                if map == 0:
+                    map1(ball)
+                elif map == 1:
+                    map2(ball)
+                elif map == 2:
+                    map3(ball)
             ball.draw(window)
         draw_shooter(map, window, front, back)
 
