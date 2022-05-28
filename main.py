@@ -18,25 +18,26 @@ def ingame(map, level):
 
         back.shooter_move()
         # the bottom background
-        window.blit(load("bg1a.png"), (0, 0))
+        window.blit(load("bg" + str(map) + "a.png"), (0, 0))
 
         # move the balls in the list base on the collision with lines
         for count in range(len(ball_list)):
             ball = ball_list[count]
             ball.rect.center = ball.pos
             # balls off the path at the start
-            if ball.pos[0] < 100:
+            if ball.pos[0] < 100 and ball.pos[1] <= 100:
                 ball.move(0, ball.x_move)
             # for the balls to follow map
             else:
+                balls_exist.add(ball.type)
                 if map == 0:
                     map1(ball)
                 elif map == 1:
                     map2(ball)
                 else:
                     map3(ball)
-            ball.draw(window)
-        window.blit(load("bg1b.png"), (0, 0))
+                ball.draw(window)
+        window.blit(load("bg" + str(map) + "b.png"), (0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # if you quit pygame
@@ -50,13 +51,11 @@ def ingame(map, level):
                 fly = front
                 front = back
                 back = pokeballs(pick_ball(), 0, 0, 0, 0, 0)
-                draw_shooter(map, window, front, back)
 
         fly.shooter_move()
         fly.draw(window)
 
-        if not pygame.event.get():
-            draw_shooter(map, window, front, back)
+        draw_shooter(map, window, front, back)
 
         pygame.display.update()
 

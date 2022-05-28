@@ -9,6 +9,7 @@ for i in range(7):
 
 balls_exist = set()
 
+
 def pick_ball():
     while True:
         rand = randint(0, 6)
@@ -31,7 +32,7 @@ def generate_ball(level):
 
 # pokeball class with the ball_image, position, rotate of angle and rect for collision
 class pokeballs:
-    def __init__(self, ball_type, x_pos=0, y_pos=0, rotate=randint(0, 2), x_move=1, y_move=1):
+    def __init__(self, ball_type, x_pos=0, y_pos=0, rotate=randint(0, 2), x_move=3, y_move=3):
         self.type = ball_type
         self.rotate = rotate  # the rotation of the ball
         self.ball_image = ball_images[self.type][self.rotate]

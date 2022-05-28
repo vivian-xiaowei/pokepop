@@ -30,6 +30,7 @@ def follow_shooter(window, ball, center, distance, pos):
         ball.angle = 90
     else:
         ball.angle = 270
+    ball.draw(window)
 
 
 def draw_shooter(map, window, front, back):
@@ -38,8 +39,5 @@ def draw_shooter(map, window, front, back):
         shooter = pygame.image.load("shooter 1.png")
         shooter = pygame.transform.scale(shooter, (112, 190))
         follow_shooter(window, front, center, 85, pygame.mouse.get_pos())
-        front.draw(window)
         follow_shooter(window, back, center, -35, pygame.mouse.get_pos())
-        back.angle += 180
-        back.draw(window)
         rotate_shooter(window, center[0], center[1], pygame.mouse.get_pos(), shooter)
