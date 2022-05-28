@@ -19,11 +19,6 @@ vertRoads = [road3, road4]
 
 
 def map1(ball):
-    draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)
-    draw.line(window, (0, 0, 0), (100, 300), (900, 300), 1)
-    draw.line(window, (0, 0, 0), (100, 600), (900, 600), 1)
-    draw.line(window, (0, 0, 0), (900, 100), (900, 300), 1)
-    draw.line(window, (0, 0, 0), (100, 300), (100, 600), 1)
 
     if ball.rect.colliderect(horizRoads[ball.road_h]):
         ball.move(0, ball.x_move)

@@ -1,42 +1,65 @@
-import pygame.sprite
+import pygame
+from pygame.image import load
 
 from lines import *
 from shooter import *
 
 
-def main():
-    map = 0
-    ball_list = generate_ball(0)
-    front = pokeballs(randint(0, 6), 0, 0)
-    back = pokeballs(randint(0, 6), 0, 0)
+def ingame(map, level):
+    # randomly generate a list of balls
+    ball_list = generate_ball(level)
+    # randomly generate the two balls on the shooter and make sure the ball exist in the main list
+    front = pokeballs(pick_ball(), 0, 0, 0, 0, 0)
+    back = pokeballs(pick_ball(), 0, 0, 0, 0, 0)
+    fly = pokeballs(0, -100, -100, 0, 0, 0)
 
     while True:  # main game loop
         clock.tick(60)
-        window.fill((255, 255, 255))
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:  # if you quit pygame
-                pygame.quit()  # quit pygame
-                sys.exit()  # exit the system
+        back.shooter_move()
+        # the bottom background
+        window.blit(load("bg1a.png"), (0, 0))
 
-        # change the ball position base on the collision with straight lines
+        # move the balls in the list base on the collision with lines
         for count in range(len(ball_list)):
             ball = ball_list[count]
             ball.rect.center = ball.pos
+            # balls off the path at the start
             if ball.pos[0] < 100:
                 ball.move(0, ball.x_move)
+            # for the balls to follow map
             else:
                 if map == 0:
                     map1(ball)
                 elif map == 1:
                     map2(ball)
-                elif map == 2:
+                else:
                     map3(ball)
             ball.draw(window)
-        draw_shooter(map, window, front, back)
+        window.blit(load("bg1b.png"), (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # if you quit pygame
+                pygame.quit()  # quit pygame
+                sys.exit()  # exit the system
+            if event.type == pygame.MOUSEBUTTONUP:
+                run, rise = (front.pos[0] + 14 - 500, front.pos[1] + 15 - 450)
+                diff = sqrt(pow(run, 2) + pow(rise, 2))
+                front.x_move = run / diff * 10
+                front.y_move = rise / diff * 10
+                fly = front
+                front = back
+                back = pokeballs(pick_ball(), 0, 0, 0, 0, 0)
+                draw_shooter(map, window, front, back)
+
+        fly.shooter_move()
+        fly.draw(window)
+
+        if not pygame.event.get():
+            draw_shooter(map, window, front, back)
 
         pygame.display.update()
 
 
 if __name__ == "__main__":
-    main()
+    ingame(1, 0)
