@@ -18,7 +18,7 @@ def ingame(map, level):
 
         back.shooter_move()
         # the bottom background
-        window.blit(load("bg" + str(map) + "a.png"), (0, 0))
+        window.blit(load("backgrounds/" + str(map) + "a.png"), (0, 0))
 
         # move the balls in the list base on the collision with lines
         for count in range(len(ball_list)):
@@ -37,7 +37,7 @@ def ingame(map, level):
                 else:
                     map3(ball)
                 ball.draw(window)
-        window.blit(load("bg" + str(map) + "b.png"), (0, 0))
+        window.blit(load("backgrounds/" + str(map) + "b.png"), (0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # if you quit pygame
