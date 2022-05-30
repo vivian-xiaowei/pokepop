@@ -46,8 +46,8 @@ def ingame(map, level):
             if event.type == pygame.MOUSEBUTTONUP:
                 run, rise = (front.pos[0] + 14 - 500, front.pos[1] + 15 - 450)
                 diff = sqrt(pow(run, 2) + pow(rise, 2))
-                front.x_move = run / diff * 10
-                front.y_move = rise / diff * 10
+                front.x_move = run / diff * 20
+                front.y_move = rise / diff * 20
                 fly = front
                 front = back
                 back = pokeballs(pick_ball(), 0, 0, 0, 0, 0)
@@ -61,4 +61,4 @@ def ingame(map, level):
 
 
 if __name__ == "__main__":
-    ingame(1, 0)
+    ingame(0, 0)
