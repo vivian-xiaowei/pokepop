@@ -20,19 +20,19 @@ def pick_ball():
 def generate_ball(level):
     ball = []
     position = 0
-    while position <= 25:
+    while position <= 10:
         type = randint(0, 6)
-        if position <= 10:
+        if position <= 20:
             balls_exist.add(type)
-        for j in range(randint(1, 6 - level)):
-            ball.append(pokeballs(type, 700 - position * 30, 100))
+        for j in range(randint(1, 8 - level)):
+            ball.append(pokeballs(type, 500 - position * 30, 100))
             position += 1
     return ball
 
 
 # pokeball class with the ball_image, position, rotate of angle and rect for collision
 class pokeballs:
-    def __init__(self, ball_type, x_pos=0, y_pos=0, rotate=randint(0, 2), x_move=3, y_move=3):
+    def __init__(self, ball_type, x_pos=0, y_pos=0, rotate=randint(0, 2), x_move=1, y_move=1):
         self.type = ball_type
         self.rotate = rotate  # the rotation of the ball
         self.ball_image = ball_images[self.type][self.rotate]
@@ -79,3 +79,10 @@ class pokeballs:
     def speed_reset(self):
         self.x_move = 0
         self.y_move = 0
+
+    def shift(self, map):
+        if map == 0:
+            if self.road_h >= self.road_v:
+                self.pos[0] += 15 * self.x_move / abs(self.x_move)
+            else:
+                self.pos[1] += 15

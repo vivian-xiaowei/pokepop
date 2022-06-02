@@ -1,16 +1,14 @@
 import math
 from math import *
-
-import pygame.transform
-
 from balls import *
+from pygame import transform
 
 
 def rotate_shooter(window, x, y, mouse_pos, image):
     run, rise = (mouse_pos[0]-x, mouse_pos[1]-y)
     angle = math.degrees(math.atan2(rise, run))
 
-    rotimage = pygame.transform.rotate(image, -angle - 90)
+    rotimage = transform.rotate(image, -angle - 90)
     rect = rotimage.get_rect(center=(x, y))
     window.blit(rotimage, rect)
 
@@ -37,7 +35,7 @@ def draw_shooter(map, window, front, back):
     if map == 0:
         center = [500, 450]
         shooter = pygame.image.load("shooter 1.png")
-        shooter = pygame.transform.scale(shooter, (112, 190))
+        shooter = transform.scale(shooter, (112, 190))
         follow_shooter(window, front, center, 85)
         rotate_shooter(window, center[0], center[1], pygame.mouse.get_pos(), shooter)
         follow_shooter(window, back, center, -34.8)

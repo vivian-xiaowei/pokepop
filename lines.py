@@ -1,5 +1,3 @@
-import pygame
-
 from spiral import *
 from balls import *
 
