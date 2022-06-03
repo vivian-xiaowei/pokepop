@@ -2,8 +2,6 @@ import sys
 import pygame
 from pygame import *
 import math
-from math import *
-from balls import *
 
 # from lines import *
 

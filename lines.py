@@ -43,6 +43,7 @@ def map1(ball):
         ball.move(1, ball.y_move)
 
     if ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(vertRoads[ball.road_v]):
+        print(ball.pos)
         if ball.road_v + 1 < len(vertRoads):
             ball.road_v += 1
         if ball.road_h + 1 < len(horizRoads):
