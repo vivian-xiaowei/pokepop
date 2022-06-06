@@ -22,8 +22,6 @@ def game(map, level):
 
         # the bottom background
         window.blit(load("backgrounds/" + str(map) + "a.png"), (0, 0))
-        # window.blit(test.ball_image, test.pos)
-        # print(test.rect.colliderect(vertRoads1[1]))
         # move the balls in the list base on the collision with lines
         for count in range(len(ball_list)):
             ball = ball_list[count]
@@ -42,6 +40,23 @@ def game(map, level):
                         ball_list[count].type = flying.type
                         push = ball_list[len(ball_list) - 1].type
                         fly.remove(flying)
+
+                        startingIndex, endingIndex = count, count
+                        while startingIndex > 0:
+                            if ball_list[startingIndex].type == ball_list[startingIndex - 1].type:
+                                startingIndex -= 1
+                            else:
+                                break
+                        while endingIndex < len(ball_list) - 2:
+                            if ball_list[count].type == ball_list[endingIndex + 1].type:
+                                endingIndex += 1
+                            else:
+                                break
+                        if ball_list[endingIndex + 1].type == ball_list[count].type and endingIndex + 2 == len(ball_list):
+                            endingIndex += 2
+                        print("startingIndex", startingIndex)
+                        print("endingIndex", endingIndex)
+                        print(len(ball_list))
                         break
                 if map == 0:
                     map1(ball)
