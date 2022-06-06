@@ -2,11 +2,16 @@ from spiral import *
 from balls import *
 
 # map 1
-road1 = draw.line(window, (0, 0, 0), (100, 100), (900, 100), 1)  # top horizontal
-road2 = draw.line(window, (0, 0, 0), (100, 300), (900, 300), 1)  # middle horizontal
-road5 = draw.line(window, (0, 0, 0), (100, 600), (900, 600), 1)  # bottom horizontal
-road3 = draw.line(window, (0, 0, 0), (900, 100), (900, 300), 1)  # higher vertical
-road4 = draw.line(window, (0, 0, 0), (100, 300), (100, 600), 1)  # lower vertical
+left = 112
+right = 916
+top = 100
+middle = 321
+bottom = 620
+road1 = draw.line(window, (0, 0, 0), (0, top), (right, top), 1)  # top horizontal
+road2 = draw.line(window, (0, 0, 0), (left, middle), (right, middle), 1)  # middle horizontal
+road5 = draw.line(window, (0, 0, 0), (left, bottom), (right, bottom), 1)  # bottom horizontal
+road3 = draw.line(window, (0, 0, 0), (right, top), (right, middle), 1)  # higher vertical
+road4 = draw.line(window, (0, 0, 0), (left, middle), (left, bottom), 1)  # lower vertical
 horizRoads1 = [road1, road2, road5]
 vertRoads1 = [road3, road4]
 
@@ -35,20 +40,33 @@ def map1(ball):
     horizRoads = horizRoads1
     vertRoads = vertRoads1
 
-    if ball.rect.colliderect(horizRoads[ball.road_h]):
-        ball.move(0, ball.x_move)
+    if ball.x_move != 0:
+        speed = abs(ball.x_move)
+    else:
+        speed = abs(ball.y_move)
 
-    if ball.rect.colliderect(vertRoads[ball.road_v]) or (
-            ball.road_v >= 1 and ball.rect.colliderect(vertRoads[ball.road_v - 1])):
-        ball.move(1, ball.y_move)
+    if int(ball.road_v) < 2 and ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(vertRoads[int(ball.road_v)]):
+        ball.y_move = speed - ball.y_move
+        if ball.pos[0] > WIN_X/2:
+            ball.x_move -= speed
+        else:
+            ball.x_move += speed
+        if ball.road_v == 1.5:
+            ball.road_v = 0
+        else:
+            ball.road_v += 0.5
 
-    if ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(vertRoads[ball.road_v]):
-        print(ball.pos)
-        if ball.road_v + 1 < len(vertRoads):
-            ball.road_v += 1
-        if ball.road_h + 1 < len(horizRoads):
+        if ball.road_h + 1 < len(horizRoads) and ball.y_move == 3:
             ball.road_h += 1
-            ball.x_move *= -1
+    elif ball.rect.colliderect(horizRoads[ball.road_h]):
+        if ball.road_h == 0 or ball.road_h == 2:
+            ball.x_move = speed
+        else:
+            ball.x_move = -1 * speed
+        ball.y_move = 0
+    else:
+        ball.y_move = speed
+        ball.x_move = 0
 
 
 def map2(ball):

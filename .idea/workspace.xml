@@ -5,14 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17247467-d9d7-4f2e-9ccf-2120762d0b85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backgrounds/2a.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backgrounds/2b.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/start.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/choose maps/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/choose maps/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/choose maps/3.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/balls.py" beforeDir="false" afterPath="$PROJECT_DIR$/balls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lines.py" beforeDir="false" afterPath="$PROJECT_DIR$/lines.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spiral.py" beforeDir="false" afterPath="$PROJECT_DIR$/spiral.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shooter.py" beforeDir="false" afterPath="$PROJECT_DIR$/shooter.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,8 +51,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/backgrounds" />
+      <recent name="$PROJECT_DIR$/choose maps" />
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/backgrounds" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">

@@ -17,8 +17,10 @@ def follow_shooter(window, ball, center, distance):
     mx, my = pygame.mouse.get_pos()
     run, rise = mx - center[0], center[1] - my
     diff = sqrt(pow(run, 2) + pow(rise, 2))
-    x = center[0] + run * distance / diff - ball.rect.width/2
-    y = center[1] - rise * distance / diff - ball.rect.height/2
+    x, y = center
+    if diff != 0:
+        x = center[0] + run * distance / diff - ball.rect.width/2
+        y = center[1] - rise * distance / diff - ball.rect.height/2
     ball.pos = x, y
     if rise > 0:
         ball.angle = -atan((pygame.mouse.get_pos()[0] - 500)/(450 - pygame.mouse.get_pos()[1])) * 180 / math.pi
