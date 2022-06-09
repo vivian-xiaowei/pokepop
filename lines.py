@@ -72,8 +72,8 @@ def map1(ball):
 def map2(ball):
     horizRoads = horizRoads2
 
-    if ball.rect.colliderect(horizRoads[ball.road_h]):
-        ball.move(0, ball.x_move)
+    # if ball.rect.colliderect(horizRoads[ball.road_h]):
+    #     ball.move2(0, ball.x_move)
 
     if ball.pos[0] >= 910 and ball.road_h < 3:
         yCoordinate = ball.positionY()
@@ -89,10 +89,10 @@ def map3(ball):
 
     if ball.rect.colliderect(horizRoads[ball.road_h]):
         ball.x_move = abs(ball.x_move) * horizRoadsMove[ball.road_h]
-        ball.move(0, ball.x_move)
+        ball.move2(0, ball.x_move)
 
     if ball.road_v < 2 and ball.rect.colliderect(vertRoads[ball.road_v]):
-        ball.move(1, ball.y_move)
+        ball.move2(1, ball.y_move)
 
         added = False
 

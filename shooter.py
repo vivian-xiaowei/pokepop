@@ -23,9 +23,9 @@ def follow_shooter(window, ball, center, distance):
         y = center[1] - rise * distance / diff - ball.rect.height/2
     ball.pos = x, y
     if rise > 0:
-        ball.angle = -atan((pygame.mouse.get_pos()[0] - 500)/(450 - pygame.mouse.get_pos()[1])) * 180 / math.pi
+        ball.angle = -atan((pygame.mouse.get_pos()[0] - center[0])/(center[1] - pygame.mouse.get_pos()[1])) * 180 / math.pi
     elif rise < 0:
-        ball.angle = -atan((pygame.mouse.get_pos()[0] - 500) / (450 - pygame.mouse.get_pos()[1])) * 180 / math.pi + 180
+        ball.angle = -atan((pygame.mouse.get_pos()[0] - center[0])/(center[1] - pygame.mouse.get_pos()[1])) * 180 / math.pi + 180
     elif run < 0:
         ball.angle = 90
     else:
@@ -33,11 +33,18 @@ def follow_shooter(window, ball, center, distance):
     ball.draw(window)
 
 
-def draw_shooter(map, window, front, back):
+def draw_shooter(map, window, front, back, pos):
     if map == 0:
-        center = [500, 450]
-        shooter = pygame.image.load("shooter 1.png")
-        shooter = transform.scale(shooter, (112, 190))
-        follow_shooter(window, front, center, 85)
-        rotate_shooter(window, center[0], center[1], pygame.mouse.get_pos(), shooter)
-        follow_shooter(window, back, center, -34.8)
+        size = 112, 190
+        distance = 85, -34.8
+    elif map == 1:
+        size = 150, 165
+        distance = 72, -30
+    else:
+        size = 150, 165
+        distance = 72, -30
+    shooter = pygame.image.load("shooter " + str(map + 1) + ".png")
+    shooter = transform.scale(shooter, size)
+    follow_shooter(window, front, pos, distance[0])
+    rotate_shooter(window, pos[0], pos[1], pygame.mouse.get_pos(), shooter)
+    follow_shooter(window, back, pos, distance[1])

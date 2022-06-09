@@ -10,12 +10,13 @@ for i in range(7):
 balls_exist = set()
 
 
-def pick_ball():  # randomly generate the two balls on the shooter and make sure the ball exist in the main list
+def pick_ball(previous=0):  # randomly generate the two balls on the shooter and make sure the ball exist in the main list
     while True:
         rand = randint(0, 6)
         if rand in balls_exist:
             return rand
-
+        elif len(balls_exist) == 0:
+            return previous
 
 def generate_ball(level):
     ball = []
@@ -39,10 +40,12 @@ class pokeballs:
         self.rect = self.ball_image.get_rect()
         self.angle = 0  # the angle of the image
         self.pos = [x_pos, y_pos]
+        self.rect.topleft = self.pos
         self.road_h, self.road_v = 0, 0
         self.speed = abs(x_move)
         self.x_move = x_move
         self.y_move = y_move
+        self.move = True
 
     # loop through the images
     def roll(self, speed):
@@ -50,16 +53,6 @@ class pokeballs:
         if int(self.rotate) >= 8:
             self.rotate = 0
         self.ball_image = ball_images[self.type][int(self.rotate)]
-
-    def move(self, direction, speed):
-        self.pos[direction] += speed
-        if self.x_move > 0 and direction == 0:
-            self.angle = 90
-        elif self.x_move < 0 and direction == 0:
-            self.angle = 270
-        elif self.y_move > 0 and direction == 1:
-            self.angle = 0
-        self.roll(abs(self.x_move) / 7)
 
     def shooter_move(self, angle=False):
         x, y = self.pos
@@ -87,9 +80,12 @@ class pokeballs:
         self.rect = self.ball_image.get_rect()
         window.blit(self.ball_image, self.pos)
 
-    def shift(self, map):
-        if map == 0:
-            if self.road_h >= self.road_v:
-                self.pos[0] += 15 * self.x_move / abs(self.x_move)
-            else:
-                self.pos[1] += 15
+    def move2(self, direction, speed):
+        self.pos[direction] += speed
+        if self.x_move > 0 and direction == 0:
+            self.angle = 90
+        elif self.x_move < 0 and direction == 0:
+            self.angle = 270
+        elif self.y_move > 0 and direction == 1:
+            self.angle = 0
+        self.roll(abs(self.x_move) / 7)
