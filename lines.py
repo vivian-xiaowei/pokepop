@@ -68,6 +68,8 @@ def map1(ball):
         ball.y_move = speed
         ball.x_move = 0
 
+    return True
+
 
 def map2(ball):
     horizRoads = horizRoads2
@@ -79,33 +81,47 @@ def map2(ball):
         yCoordinate = ball.positionY()
         ball.changePos(55, yCoordinate + 120)
         ball.road_h += 1
+    elif ball.pos[0] >= 910 and ball.road_h == 3:
+        return False
+    return True
 
 
 def map3(ball):
-    added = True
-    horizRoads = horizRoads3
-    vertRoads = vertRoads3
-    horizRoadsMove = [1, -1, -1, 1]
+    road1 = pygame.draw.line(window, (0, 0, 0), (100, 110), (920, 110), 1)
+    road2 = pygame.draw.line(window, (0, 0, 0), (910, 665), (90, 665), 1)
+    road3 = pygame.draw.line(window, (0, 0, 0), (90, 265), (675, 265), 1)
+
+    road4 = pygame.draw.line(window, (0, 0, 0), (920, 110), (920, 650), 1)
+    road5 = pygame.draw.line(window, (0, 0, 0), (75, 650), (75, 275), 1)
+    road6 = pygame.draw.line(window, (0, 0, 0), (700, 275), (700, 400), 1)
+    horizRoads = [road1, road2, road3]
+    vertRoads = [road4, road5, road6]
+    horizRoadsMove = [1, -1, 1]
+    vertRoadsMove=[1,-1,1]
 
     if ball.rect.colliderect(horizRoads[ball.road_h]):
-        ball.x_move = abs(ball.x_move) * horizRoadsMove[ball.road_h]
-        ball.move2(0, ball.x_move)
+        ball.x_move = 3 * horizRoadsMove[ball.road_h]
+        ball.y_move=0
 
-    if ball.road_v < 2 and ball.rect.colliderect(vertRoads[ball.road_v]):
-        ball.move2(1, ball.y_move)
+    elif ball.rect.colliderect(vertRoads[ball.road_v]):
+        ball.y_move=3*vertRoadsMove[ball.road_v]
+        ball.x_move=0
 
-        added = False
+    if (ball.rect.colliderect(horizRoads[2]) and ball.rect.colliderect(vertRoads[2])):
+        ball.road_v = 2
+        ball.road_h=2
+        ball.y_move = 3 * vertRoadsMove[ball.road_v]
+        ball.x_move = 0
+    elif ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(vertRoads[ball.road_v]):
+        if ball.pos[0] > WIN_X/2:
+            ball.road_h += 1
+        if ball.pos[1] > WIN_Y/2:
+            ball.road_v += 1
+    if(ball.road_v==2 and ball.road_h==2 and not ball.rect.colliderect(vertRoads[2])):
+        ball.x_move=0
+        ball.y_move=0
 
-    if ball.rect.colliderect(horizRoads[3]) and ball.rect.colliderect(vertRoads[1]) and not added:
-        ball.road_v = 0
-        # ball.road_h = math.ceil(ball.road_h/2)
-    elif ball.rect.colliderect(horizRoads[0]) and ball.rect.colliderect(vertRoads[0]) and not added:
-        ball.road_h = 1
-    elif ball.rect.colliderect(horizRoads[2]) and ball.rect.colliderect(vertRoads[1]) and not added:
-        ball.road_v = 1
-        ball.road_h = 3
+    if(mouse.get_pressed()[0]):
+        print(mouse.get_pos())
 
-    elif ball.rect.colliderect(teleport1):
-        ball.changePos(1000 - 100, 100 + 450)
-        ball.road_v = 1
-        ball.road_h = 2
+    return True

@@ -38,8 +38,8 @@ def draw_shooter(map, window, front, back, pos):
         size = 112, 190
         distance = 85, -34.8
     elif map == 1:
-        size = 150, 165
-        distance = 72, -30
+        size = 140, 190
+        distance = 100, -30
     else:
         size = 150, 165
         distance = 72, -30

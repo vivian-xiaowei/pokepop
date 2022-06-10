@@ -18,7 +18,7 @@ def pick_ball(previous=0):  # randomly generate the two balls on the shooter and
         elif len(balls_exist) == 0:
             return previous
 
-def generate_ball(level):
+def generate_ball(level, map=0):
     ball = []
     position = 0
     while position <= 10:
@@ -26,7 +26,10 @@ def generate_ball(level):
         if position <= 20:
             balls_exist.add(type)
         for j in range(randint(1, 8 - level)):
-            ball.append(pokeballs(type, 800 - position * 30, 100, 0, 3))
+            if (map == 2):
+                ball.append(pokeballs(type, 800 - position * 30, 110, 0, 3))
+            else:
+                ball.append(pokeballs(type, 800 - position * 30, 100, 0, 3))
             position += 1
     return ball
 
