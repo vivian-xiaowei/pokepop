@@ -10,13 +10,14 @@ for i in range(7):
 balls_exist = set()
 
 
-def pick_ball(previous=0):  # randomly generate the two balls on the shooter and make sure the ball exist in the main list
+def pick_ball(previous=0):  # randomly generate the two balls on the shooter and the balls exist in main list
     while True:
         rand = randint(0, 6)
         if rand in balls_exist:
             return rand
         elif len(balls_exist) == 0:
             return previous
+
 
 def generate_ball(level, map=0):
     ball = []
@@ -26,7 +27,7 @@ def generate_ball(level, map=0):
         if position <= 20:
             balls_exist.add(type)
         for j in range(randint(1, 8 - level)):
-            if (map == 2):
+            if map == 2:
                 ball.append(pokeballs(type, 800 - position * 30, 110, 0, 3))
             else:
                 ball.append(pokeballs(type, 800 - position * 30, 100, 0, 3))
@@ -36,7 +37,7 @@ def generate_ball(level, map=0):
 
 # pokeball class with the ball_image, position, rotate of angle and rect for collision
 class pokeballs:
-    def __init__(self, ball_type, x_pos=0, y_pos=0, rotate=randint(0, 2), x_move=3, y_move=0):
+    def __init__(self, ball_type, x_pos=-30, y_pos=-30, rotate=randint(0, 2), x_move=3, y_move=0):
         self.type = ball_type
         self.rotate = rotate  # the rotation of the ball
         self.ball_image = ball_images[self.type][int(self.rotate)]

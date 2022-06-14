@@ -41,8 +41,8 @@ def draw_shooter(map, window, front, back, pos):
         size = 140, 190
         distance = 100, -30
     else:
-        size = 150, 165
-        distance = 72, -30
+        size = 160, 150
+        distance = 80, -25
     shooter = pygame.image.load("shooter " + str(map + 1) + ".png")
     shooter = transform.scale(shooter, size)
     follow_shooter(window, front, pos, distance[0])
