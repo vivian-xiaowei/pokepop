@@ -22,7 +22,7 @@ def pick_ball(previous=0):  # randomly generate the two balls on the shooter and
 def generate_ball(level, map=0):
     ball = []
     position = 0
-    while position <= 10:
+    while position <= 20:
         type = randint(0, 6)
         if position <= 20:
             balls_exist.add(type)
@@ -65,12 +65,14 @@ class pokeballs:
         else:
             self.pos = [x + self.x_move, y + self.y_move]
         if angle:
-            if self.x_move == 3:
+            if self.x_move > 0:
                 self.angle = 90
-            elif self.x_move == -3:
+            elif self.x_move < 0:
                 self.angle = 270
-            elif self.y_move == 3:
+            elif self.y_move > 0:
                 self.angle = 0
+            elif self.y_move < 0:
+                self.angle = 180
             self.roll(self.speed / 7)
 
     def changePos(self, x, y):

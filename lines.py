@@ -23,17 +23,15 @@ road4 = pygame.draw.line(window, (0, 0, 0), (50, 460), (930, 460), 1)
 horizRoads2 = [road1, road2, road3, road4]
 
 # map 3
-road1 = pygame.draw.line(window, (0, 0, 0), (100, 100), (800, 100), 1)
-road2 = pygame.draw.line(window, (0, 0, 0), (800, 100), (800, 200), 1)
-road3 = pygame.draw.line(window, (0, 0, 0), (100, 200), (800, 200), 1)
-teleport1 = pygame.draw.line(window, (0, 0, 0), (101, 199), (101, 201), 1)
+road1 = pygame.draw.line(window, (0, 0, 0), (100, 110), (920, 110), 1)
+road2 = pygame.draw.line(window, (0, 0, 0), (910, 665), (90, 665), 1)
+road3 = pygame.draw.line(window, (0, 0, 0), (90, 265), (700, 265), 1)
 
-road4 = pygame.draw.line(window, (0, 0, 0), (1000 - 100, 100 + 450), (1000 - 801, 100 + 450), 1)
-road5 = pygame.draw.line(window, (0, 0, 0), (1000 - 800, 99 + 450), (1000 - 800, 201 + 450), 1)
-road6 = pygame.draw.line(window, (0, 0, 0), (1000 - 100, 199 + 450), (1000 - 801, 199 + 450), 1)
-
-horizRoads3 = [road1, road3, road4, road6]
-vertRoads3 = [road2, road5]
+road4 = pygame.draw.line(window, (0, 0, 0), (920, 110), (920, 650), 1)
+road5 = pygame.draw.line(window, (0, 0, 0), (75, 650), (75, 275), 1)
+road6 = pygame.draw.line(window, (0, 0, 0), (700, 275), (700, 400), 1)
+horizRoads3 = [road1, road2, road3]
+vertRoads3 = [road4, road5, road6]
 
 multiplier = 1
 
@@ -48,7 +46,7 @@ def map1(ball):
     else:
         speed = abs(ball.y_move) * multiplier
 
-    if int(ball.road_v) < 2 and ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(
+    if ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(
             vertRoads[int(ball.road_v)]):
         ball.y_move = speed - ball.y_move
         if ball.pos[0] > WIN_X / 2:
@@ -59,11 +57,10 @@ def map1(ball):
             ball.road_v = 0
         else:
             ball.road_v += 0.5
-
         if ball.road_h + 1 < len(horizRoads) and ball.y_move == 3:
             ball.road_h += 1
     elif ball.rect.colliderect(horizRoads[ball.road_h]):
-        if ball.road_h == 0 or ball.road_h == 2:
+        if ball.road_h % 2 == 0:
             ball.x_move = speed
         else:
             ball.x_move = -1 * speed
@@ -72,10 +69,11 @@ def map1(ball):
         ball.y_move = speed
         ball.x_move = 0
 
-    ending = pygame.draw.line(window, (0, 0, 0), (882, 600), (882, 615), 1)
-    if ending.colliderect(ball):
+    ending = pygame.draw.line(window, (0, 0, 0), (885, 600), (885, 615), 1)
+    if ending.colliderect(ball) and multiplier == 1:
         multiplier = 1.25
-    if ball.pos[0] >= 990:
+    if ball.road_v == 0 and ball.road_h == 2 and ball.pos[0] >= 900:
+    # if multiplier == 1.25:
         ball.x_move = 0
         ball.y_move = 0
 
@@ -96,15 +94,8 @@ def map2(ball):
 
 def map3(ball):
     global multiplier
-    road1 = pygame.draw.line(window, (0, 0, 0), (100, 110), (920, 110), 1)
-    road2 = pygame.draw.line(window, (0, 0, 0), (910, 665), (90, 665), 1)
-    road3 = pygame.draw.line(window, (0, 0, 0), (90, 265), (700, 265), 1)
-
-    road4 = pygame.draw.line(window, (0, 0, 0), (920, 110), (920, 650), 1)
-    road5 = pygame.draw.line(window, (0, 0, 0), (75, 650), (75, 275), 1)
-    road6 = pygame.draw.line(window, (0, 0, 0), (700, 275), (700, 400), 1)
-    horizRoads = [road1, road2, road3]
-    vertRoads = [road4, road5, road6]
+    horizRoads = horizRoads3
+    vertRoads = vertRoads3
     horizRoadsMove = [1, -1, 1]
     vertRoadsMove = [1, -1, 1]
 
@@ -130,9 +121,7 @@ def map3(ball):
         ball.x_move = 0
         ball.y_move = 0
         print(ball.pos)
-    # if ball.road_v == 2 and ball.road_h == 2 and ball.pos[0]
 
     ending = pygame.draw.line(window, (0, 0, 0), (685, 400), (695, 400), 1)
-
     if ending.colliderect(ball):
         multiplier = 3
