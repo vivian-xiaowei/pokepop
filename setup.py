@@ -1,0 +1,32 @@
+import pygame
+from pygame import *
+from pygame.image import load
+
+pygame.init()
+clock = time.Clock()
+
+# setting up window size
+WIN_X = int(1000)
+
+# how tall the screen is going to be
+WIN_Y = int(750)
+
+# set the screen
+window = pygame.display.set_mode((WIN_X, WIN_Y))
+
+# lists of animations for level selection
+map1_animation = []
+map2_animation = []
+map3_animation = []
+
+for i in range(1, 5):
+    map1_animation.append(transform.scale(load("level animation/leaf" + str(i) + ".png"), (80, 110)))
+    map2_animation.append(transform.scale(load("level animation/cactus" + str(i) + ".png"), (100, 120)))
+for i in range(1, 9):
+    map3_animation.append(transform.scale(load("level animation/cube" + str(i) + ".png"), (100, 103)))
+
+animations = [map1_animation, map2_animation, map3_animation]
+
+red = 255, 0, 0
+blue = 0, 0, 255
+black = 0, 0, 0

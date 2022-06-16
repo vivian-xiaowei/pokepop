@@ -1,21 +1,21 @@
 from pygame.image import load
+import sys
+from pygame.time import wait
+
 from lines import *
 from shooter import *
 from balls import *
 
 
-def speeding(ball_list):
-    ball = ball_list[len(ball_list) - 1]
-    return abs(ball.x_move) + abs(ball.y_move) != ball.speed
-
-
 def find_length(ball_list, count, push):
     start, end = count, count
-    while start > 0 and (ball_list[start].type, ball_list[start].move) == (ball_list[start-1].type, ball_list[start-1].move):
+    while start > 0 and (ball_list[start].type, ball_list[start].move) == (
+    ball_list[start - 1].type, ball_list[start - 1].move):
         start -= 1
-    while end < len(ball_list) - 2 and (ball_list[end].type, ball_list[end].move) == (ball_list[end + 1].type, ball_list[end + 1].move):
+    while end < len(ball_list) - 2 and (ball_list[end].type, ball_list[end].move) == (
+    ball_list[end + 1].type, ball_list[end + 1].move):
         end += 1
-    if end == len(ball_list) - 2 and ball_list[len(ball_list)-1].type == ball_list[count].type:
+    if end == len(ball_list) - 2 and ball_list[len(ball_list) - 1].type == ball_list[count].type:
         end += 1
     if end == len(ball_list) - 1 and push == ball_list[start].type and ball_list[count].move:
         end += 1
@@ -24,21 +24,19 @@ def find_length(ball_list, count, push):
 
 def game(map, level):
     ball_list = generate_ball(level, map)  # randomly generate a list of balls
-    front = pokeballs(pick_ball(), -30, -30, 0, 0, 0)
-    back = pokeballs(pick_ball(), -30, -30, 0, 0, 0)
-    shooter_pos = [[500, 450], [500, 640], [320, 460]]
-    fly = []
-    ingame = True
+    front = pokeballs(pick_ball(), -30, -30, 0, 0, 0)  # front ball on shooter
+    back = pokeballs(pick_ball(), -30, -30, 0, 0, 0)  # second shooter ball
+    shooter_pos = [[500, 450], [500, 640], [320, 460]]  # the center for shooters on different maps
+    fly = []  # to store balls shot out
+    speedup = False  # if the ball touches the end and speed up to leave
+    speed = 1  # the number of times moving the ball
 
-    while ingame:
-        print(ball_list[len(ball_list) - 1].rect.colliderect([0, 0, WIN_X, WIN_Y]))
-        if len(ball_list) == 0:
-            ingame = False
-        elif ball_list[len(ball_list) - 1].x_move + ball_list[len(ball_list) - 1].y_move == 0:
-            ingame = False
+    while True:
+        if len(ball_list) == 0 or ball_list[len(ball_list) - 1].x_move + ball_list[len(ball_list) - 1].y_move == 0:
+            break
 
-        push = -1
-        clock.tick(60)
+        push = -1  # the ball type to add at the end of the list
+        clock.tick(30)
         start, end = 0, 0
         # the bottom background
         window.blit(load("backgrounds/" + str(map) + "a.png"), (0, 0))
@@ -49,53 +47,77 @@ def game(map, level):
             ball.rect.topleft = ball.pos
             # balls off the path at the start
             if ball.pos[0] < 100 and ball.pos[1] <= 200:
-                ball.shooter_move(True)
+                for _ in range(int(speed)):
+                    ball.shooter_move(True)
                 ball.rotate = ball_list[0].rotate
             else:
                 balls_exist.add(ball.type)
                 for fly_count in range(len(fly)):
                     flying = fly[fly_count]
                     if dist(ball.pos, flying.pos) <= 30:
-                        push = ball_list[length - 1].type
-                        for i in range(length-1, count, -1):
-                            ball_list[i].type = ball_list[i-1].type
-                        ball_list[count].type = flying.type
-                        fly.remove(flying)
-                        start, end = find_length(ball_list, count, push)
+                        if ball.move or count == length - 1 or dist(ball_list[count].pos, ball_list[count + 1].pos) <= 30:
+                            print("normal")
+                            print(length)
+                            push = ball_list[length - 1].type
+                            for i in range(length - 1, count, -1):
+                                ball_list[i].type = ball_list[i - 1].type
+                            ball_list[count].type = flying.type
+                            fly.remove(flying)
+                            start, end = find_length(ball_list, count, push)
+                        else:
+                            ball_list[count].type = flying.type
+                            fly.remove(flying)
+                            start, end = find_length(ball_list, count, push)
+                            push = ball_list[end].type
+                            for i in range(end, count, -1):
+                                ball_list[i].type = ball_list[i - 1].type
                         break
                 if ball.move:
-                    if map == 0:
-                        frameratemap1(ball)
-                    elif map == 1:
-                        map2(ball)
-                    else:
-                        map3(ball)
-                    ball.shooter_move(True)
-                elif count + 1 == length or (ball_list[count + 1].move and dist(ball_list[count + 1].pos, ball.pos) <= 30):
+                    for _ in range(int(speed)):
+                        if map == 0:
+                            speedup = map1(ball, speedup)
+                        elif map == 1:
+                            speedup = map2(ball, speedup)
+                        elif map == 2:
+                            speedup = map3(ball, speedup)
+                        # speedup = change_move(ball, speedup)
+                        ball.shooter_move(True)
+                elif count + 1 == length or (
+                        ball_list[count + 1].move and dist(ball_list[count + 1].pos, ball.pos) <= 30):
                     for j in range(count, -1, -1):
-                        if not ball_list[j].move and (j+1 == length or dist(ball_list[j].pos, ball_list[j+1].pos) <= 30):
+                        if not ball_list[j].move and (
+                                j + 1 == length or dist(ball_list[j].pos, ball_list[j + 1].pos) <= 30):
                             ball_list[j].move = True
                         else:
                             break
-                # if not(map == 0 and ball.pos[0] >= 882 and ball.pos[1] > 500):
                 ball.draw(window)
+
+        if speedup:
+            speed += 0.1
+        elif int(speed) > 1 and not speedup:
+            speed -= 0.1
+
         window.blit(load("backgrounds/" + str(map) + "b.png"), (0, 0))
 
-        if push > -1 and not speeding(ball_list):
-            last = ball_list[len(ball_list)-1]
+        if push > -1:
+            if not end >= len(ball_list) - 1 and not ball_list[end].move:
+                add = end
+            else:
+                add = len(ball_list) - 1
+            last = ball_list[add]
             x, y = last.pos
             X, Y = last.x_move, last.y_move
             if X != 0:
                 x += 30 * X * -1 / abs(X)
             if Y != 0:
-                y -= 30
+                y += 30 * Y * -1 / abs(Y)
             new_ball = pokeballs(push, x, y, last.rotate, last.x_move, last.y_move)
             new_ball.road_h, new_ball.road_v = last.road_h, last.road_v
             new_ball.speed = abs(new_ball.x_move) + abs(new_ball.y_move)
             new_ball.move = last.move
-            ball_list.append(new_ball)
+            ball_list.insert(add + 1, new_ball)
 
-        if end - start + 1 >= 3 and not speeding(ball_list):
+        if end - start + 1 >= 3:
             deleted = ball_list[start].type
             balls_exist.remove(ball_list[start].type)
             if end != len(ball_list) - 1:
@@ -112,7 +134,7 @@ def game(map, level):
             if event.type == pygame.QUIT:  # if you quit pygame
                 pygame.quit()  # quit pygame
                 sys.exit()  # exit the system
-            if event.type == pygame.MOUSEBUTTONUP and not speeding(ball_list):
+            if event.type == pygame.MOUSEBUTTONUP and int(speed) == 1:
                 run, rise = (front.pos[0] + 14 - shooter_pos[map][0], front.pos[1] + 15 - shooter_pos[map][1])
                 diff = sqrt(pow(run, 2) + pow(rise, 2))
                 fly.append(front)
@@ -121,10 +143,10 @@ def game(map, level):
                 front = back
                 back = pokeballs(pick_ball(), 0, 0, 0, 0, 0)
 
-        if not fly == [] and not speeding(ball_list):
+        if not fly == []:
             out = 0
             for ball in fly:
-                if not(0 - 30 < ball.pos[0] < WIN_X and -30 < ball.pos[1] < WIN_Y):
+                if not (0 - 30 < ball.pos[0] < WIN_X and -30 < ball.pos[1] < WIN_Y):
                     out = ball
                     # break
                 ball.shooter_move()

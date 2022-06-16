@@ -10,20 +10,20 @@ for i in range(7):
 balls_exist = set()
 
 
-def pick_ball(previous=0):  # randomly generate the two balls on the shooter and the balls exist in main list
+def pick_ball(previous=-1, repeat=True):  # randomly generate the two balls on the shooter and the balls exist in main list
+    if previous in balls_exist or len(balls_exist) == 0:
+        return previous
     while True:
         rand = randint(0, 6)
-        if rand in balls_exist:
+        if (rand in balls_exist) == repeat or len(balls_exist) == 7:
             return rand
-        elif len(balls_exist) == 0:
-            return previous
 
 
 def generate_ball(level, map=0):
     ball = []
     position = 0
-    while position <= 20:
-        type = randint(0, 6)
+    type = randint(0, 6)
+    while position <= 10:
         if position <= 20:
             balls_exist.add(type)
         for j in range(randint(1, 8 - level)):
@@ -32,6 +32,7 @@ def generate_ball(level, map=0):
             else:
                 ball.append(pokeballs(type, 800 - position * 30, 100, 0, 3))
             position += 1
+        type = pick_ball(-1, False)
     return ball
 
 
@@ -60,10 +61,8 @@ class pokeballs:
 
     def shooter_move(self, angle=False):
         x, y = self.pos
-        if self.x_move == -1:
-            self.pos = [x, y + self.y_move]
-        else:
-            self.pos = [x + self.x_move, y + self.y_move]
+
+        self.pos = [x + self.x_move, y + self.y_move]
         if angle:
             if self.x_move > 0:
                 self.angle = 90
