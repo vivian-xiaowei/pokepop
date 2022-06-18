@@ -30,3 +30,9 @@ animations = [map1_animation, map2_animation, map3_animation]
 red = 255, 0, 0
 blue = 0, 0, 255
 black = 0, 0, 0
+
+index=0
+image=map1_animation[0]
+numbers=[]
+for i in range(1,7):
+    numbers.append(transform.scale(load("level animation/Level " + str(i) + ".png"), (25, 50)))

@@ -23,14 +23,14 @@ def generate_ball(level, map=0):
     ball = []
     position = 0
     type = randint(0, 6)
-    while position <= 10:
-        if position <= 20:
+    while position <= 40:
+        if position <= 15:
             balls_exist.add(type)
         for j in range(randint(1, 8 - level)):
             if map == 2:
-                ball.append(pokeballs(type, 800 - position * 30, 110, 0, 3))
+                ball.append(pokeballs(type, 120 - position * 30, 110, 0, 3))
             else:
-                ball.append(pokeballs(type, 800 - position * 30, 100, 0, 3))
+                ball.append(pokeballs(type, 120 - position * 30, 100, 0, 3))
             position += 1
         type = pick_ball(-1, False)
     return ball
@@ -76,9 +76,6 @@ class pokeballs:
 
     def changePos(self, x, y):
         self.pos = [x, y]
-
-    def positionY(self):
-        return self.pos[1]
 
     def draw(self, window):
         self.ball_image = pygame.transform.rotate(ball_images[self.type][int(self.rotate)], self.angle)
