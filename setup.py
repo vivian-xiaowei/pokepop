@@ -30,9 +30,20 @@ animations = [map1_animation, map2_animation, map3_animation]
 red = 255, 0, 0
 blue = 0, 0, 255
 black = 0, 0, 0
+colours = [red, blue, black]
 
 index=0
 image=map1_animation[0]
 numbers=[]
 for i in range(1,7):
     numbers.append(transform.scale(load("level animation/Level " + str(i) + ".png"), (25, 50)))
+
+signs = []
+for i in range(1, 4):
+    signs.append(load("choose maps/" + str(i) + ".png"))
+
+sign_pos = [[280, 300], [700, 300], [500, 550]]
+sign_size = [[230, 160], [232, 129], [204, 235]]
+
+back_button = load("button/back.png")
+back_button = transform.scale(back_button, (75, 75))

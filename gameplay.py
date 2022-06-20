@@ -3,6 +3,7 @@
 import pygame.draw
 from pygame.image import load
 from pygame.time import wait
+import balls
 from main import try_exit
 from main import aftergame
 from lines import *
@@ -18,7 +19,7 @@ def find_length(ball_list, count, push, toadd):
     while end < len(ball_list) - 2 and ball_list[end].type == ball_list[end + 1].type and (ball_list[end].move ==
             ball_list[end + 1].move or dist(ball_list[end].pos, ball_list[end + 1].pos) <= 30):
         end += 1
-    if end == toadd - 1 and ball_list[len(ball_list) - 1].type == ball_list[count].type:
+    if end == toadd - 1 and ball_list[toadd].type == ball_list[count].type:
         end += 1
     if end == toadd and push == ball_list[start].type:
         end += 1
@@ -26,7 +27,7 @@ def find_length(ball_list, count, push, toadd):
 
 
 def find_stopped(ball_list, start):
-    while start + 1 < len(ball_list) and not ball_list[start + 1].move:
+    while start + 1 < len(ball_list) and not ball_list[start + 1].move and dist(ball_list[start].pos, ball_list[start + 1].pos) <= 30:
         start += 1
     return start
 
@@ -35,12 +36,13 @@ def game(map, level):
     ball_list = generate_ball(level, map)  # randomly generate a list of balls
     front = pokeballs(pick_ball(), -30, -30, 0, 0, 0)  # front ball on shooter
     back = pokeballs(pick_ball(), -30, -30, 0, 0, 0)  # second shooter ball
-    shooter_pos = [[500, 450], [500, 640], [320, 460]]  # the center for shooters on different maps
+    shooter_pos = [[500, 450], [500, 640], [280, 460]]  # the center for shooters on different maps
     fly = []  # to store balls shot out
     speedup = False  # if the ball touches the end and speed up to leave
     speed = 6  # the number of times moving the ball
     add_index = -1
     ingame = True
+    win = False
     change_move = map1
     if map == 1:
         change_move = map2
@@ -48,8 +50,13 @@ def game(map, level):
         change_move = map3
 
     while ingame:
-        if len(ball_list) == 0 or ball_list[len(ball_list) - 1].x_move + ball_list[len(ball_list) - 1].y_move == 0:
+        if len(ball_list) == 0:
             ingame = False
+            win = True
+        elif ball_list[len(ball_list) - 1].x_move + ball_list[len(ball_list) - 1].y_move == 0:
+            ingame = False
+            win = False
+
         push = -1  # the ball type to add at the end of the list
         clock.tick(60)
         start, end = 0, 0
@@ -66,14 +73,14 @@ def game(map, level):
                     ball.shooter_move(True)
                 ball.rotate = ball_list[count - 1].rotate
             else:
-                balls_exist.add(ball.type)
+                balls.balls_exist.add(ball.type)
                 pos = ball.pos[0] + 15, ball.pos[1] + 15
                 for flying in fly:
                     angle = flying.angle
                     half = 15 * (abs(cos(angle)) + abs(sin(angle)))  # reference
                     center = (flying.pos[0] + half, flying.pos[1] + half)
                     if dist(pos, center) <= 30:
-                        notmove = find_stopped(ball_list, 0)
+                        notmove = find_stopped(ball_list, count)
                         if ball.move or dist(ball_list[notmove].pos, ball_list[notmove + 1].pos) <= 60:
                             add_index = length - 1
                         else:
@@ -116,8 +123,8 @@ def game(map, level):
         window.blit(load("backgrounds/" + str(map) + "b.png"), (0, 0))
 
         if end - start + 1 >= 3:
-            deleted = ball_list[start].type
-            balls_exist.remove(ball_list[start].type)
+            # deleted = ball_list[start].type
+            # balls_exist.remove(ball_list[start].type)
             if end != len(ball_list) - 1:
                 for i in range(0, start):
                     ball_list[i].move = False
@@ -148,6 +155,6 @@ def game(map, level):
         front.type = pick_ball(front.type)
         back.type = pick_ball(back.type)
         draw_shooter(map, window, front, back, shooter_pos[map], speed)
+        balls.balls_exist = set()
         pygame.display.update()
-
-    aftergame()
+    aftergame(win, map, level)
