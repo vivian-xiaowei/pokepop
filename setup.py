@@ -57,3 +57,4 @@ grey = [transform.scale(load("level/grey0.png"), (80, 110)), transform.scale(loa
         transform.scale(load("level/grey2.png"), (100, 103))]
 
 level_lock = [[True, False, False, False, False, False] for _ in range(3)]
+map, level = 0, 0

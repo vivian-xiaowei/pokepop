@@ -13,10 +13,11 @@ balls_exist = set()
 def pick_ball(previous=-1, repeat=True):  # randomly generate the two balls on the shooter and the balls exist in main list
     if previous != -1 and (previous in balls_exist or len(balls_exist) == 0):
         return previous
-    while True:
+    while len(balls_exist) != 0:
         rand = randint(0, 6)
         if (rand in balls_exist) == repeat or len(balls_exist) == 7:
             return rand
+    return previous
 
 
 def generate_ball(level, map=0):

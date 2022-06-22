@@ -23,6 +23,8 @@ def find_length(ball_list, count, push, toadd):
         end += 1
     if end == toadd and push == ball_list[start].type:
         end += 1
+    if end < len(ball_list) and not ball_list[end].move and ball_list[end + 1].move and dist(ball_list[end].pos, ball_list[end + 1].pos) <= 60:
+        end += 1
     return start, end
 
 
@@ -64,10 +66,10 @@ def add_correction(ball, last, rh, rv, xm, ym):
     return [x, y]
 
 
-def map2_correction(list, count):
-    diff = 88 - list[count].pos[0]
-    for i in range(find_stopped(list, count, False), count + 1):
-        ball = list[i]
+def map2_correction(ball_list, count):
+    diff = 88 - ball_list[count].pos[0]
+    for i in range(find_stopped(ball_list, count, False), count + 1):
+        ball = ball_list[i]
         ball.pos[0] += diff
         print(ball.pos)
 
@@ -188,7 +190,7 @@ def game(map, level):
                 fly[len(fly) - 1].x_move = run / diff * 20
                 fly[len(fly) - 1].y_move = rise / diff * 20
                 front = back
-                back = pokeballs(pick_ball(back.type), 0, 0, 0, 0, 0)
+                back = pokeballs(pick_ball(-1), 0, 0, 0, 0, 0)
 
         if not fly == []:
             out = 0

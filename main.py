@@ -5,9 +5,6 @@ from setup import *
 import sys
 
 
-map, level = 0, 0
-
-
 def try_exit(event):
     if event.type == pygame.QUIT:  # if you quit pygame
         pygame.quit()  # quit pygame
@@ -90,10 +87,10 @@ def choose_level():
                 indexes[i] = 0
         pygame.display.update()
     if level != -1:
-        blackout(level)
+        blackout()
 
 
-def blackout(level):  # transition between choose map and game
+def blackout():  # transition between choose map and game
     fill = pygame.Surface((WIN_X, WIN_Y))
     fill.fill((0, 0, 0))
     speed = 0.1
@@ -104,6 +101,7 @@ def blackout(level):  # transition between choose map and game
         window.blit(fill, (0, 0))
         pygame.display.update()
     import gameplay
+    print(level)
     gameplay.game(map, level)
 
 
@@ -146,11 +144,11 @@ def aftergame(win, mapC, levelC):
                     over = False
                     choose_level()
                 elif buttons[2].collidepoint(mouse):
-                    blackout(level)
+                    blackout()
                     over = False
                 elif len(buttons) == 4 and buttons[3].collidepoint(mouse):
                     level += 1
-                    blackout(level)
+                    blackout()
                     over = False
 
 
