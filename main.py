@@ -55,7 +55,7 @@ def choose_level():
     animation = animations[map]
     width, height = animation[0].get_width(), animation[0].get_height()
     count = 0
-    coordinates = [(250, 200), (WIN_X / 2, 200), (750, 200), (250, 400), (WIN_X / 2, 400), (750, 400)]
+    coordinates = [(250, 200), (WIN_X / 2, 200), (750, 200), (250, 350), (WIN_X / 2, 350), (750, 350)]
     indexes = [0, 0, 0, 0, 0, 0]
     offset = [(-10, -25), (-15, -40), (-5, -30)]
     buttons = []
@@ -66,7 +66,7 @@ def choose_level():
         if transition > 0:
             transition -= 1
         clock.tick(60)
-        window.fill((255, 255, 255))
+        window.blit(load("level/" + str(map) + ".png"), (0, 0))
         back = window.blit(back_button, (50, 30))
         for event in pygame.event.get():
             try_exit(event)
@@ -110,16 +110,6 @@ def blackout():  # transition between choose map and game
 
 
 def aftergame(win, mapC, levelC):
-    # while True:
-    #     draw.rect(window, (97, 56, 29), (250, 170, 500, 400), 0, 20, 20, 20, 20)
-    #     draw.rect(window, (207, 159, 111), (270, 190, 460, 360), 0, 15, 15, 15, 15)
-    #     text = load("Level_Completed.png")
-    #     window.blit(text, (500 - text.get_width()/2, 300 - text.get_height()/2))
-    #
-    #     pygame.display.update()
-    #     if pygame.mouse.get_pressed()[0]:
-    #         break
-    # wait(1000)
     global level, map
     map = mapC
     level = levelC
@@ -166,11 +156,12 @@ def aftergame(win, mapC, levelC):
 
 def starting():
     start = True
-    startingImage = load("start.png")
+    startingImage = load("start/start.png")
+    mouse = [transform.scale(load("start/blank.png"), (50, 72)), transform.scale(load("start/left.png"), (50, 72))]
     scaled = transform.scale(startingImage, (int(1000 * 1.1), int(750 * 1.1)))
-    window.blit(startingImage, (0, 0))
+    count = 1
     while start:
-        clock.tick(60)
+        clock.tick(30)
         for event in pygame.event.get():
             try_exit(event)
         pos = pygame.mouse.get_pos()
@@ -181,6 +172,10 @@ def starting():
                 start = False
         else:
             window.blit(startingImage, (0, 0))
+        window.blit(mouse[round(count)], (900, 40))
+        count += 0.03
+        if count > 1:
+            count = 0
         pygame.display.update()
 
 

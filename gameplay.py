@@ -14,10 +14,13 @@ from balls import *
 def find_length(ball_list, count, push, toadd):
     start, end = count, count
     while start > 0 and ball_list[start].type == ball_list[start - 1].type and (ball_list[start].move ==
-            ball_list[start - 1].move or dist(ball_list[start].pos, ball_list[start - 1].pos) <= 30):
+                                                                                ball_list[start - 1].move or dist(
+                ball_list[start].pos, ball_list[start - 1].pos) <= 30):
         start -= 1
     while end < len(ball_list) - 2 and ball_list[end].type == ball_list[end + 1].type and (ball_list[end].move ==
-            ball_list[end + 1].move or dist(ball_list[end].pos, ball_list[end + 1].pos) <= 30):
+                                                                                           ball_list[
+                                                                                               end + 1].move or dist(
+                ball_list[end].pos, ball_list[end + 1].pos) <= 30):
         end += 1
     if end == toadd - 1 and ball_list[toadd].type == ball_list[count].type:
         end += 1
@@ -27,9 +30,47 @@ def find_length(ball_list, count, push, toadd):
 
 
 def find_stopped(ball_list, start):
-    while start + 1 < len(ball_list) and not ball_list[start + 1].move and dist(ball_list[start].pos, ball_list[start + 1].pos) <= 30:
+    while start + 1 < len(ball_list) and not ball_list[start + 1].move and dist(ball_list[start].pos,
+                                                                                ball_list[start + 1].pos) <= 30:
         start += 1
     return start
+
+
+def add_correction(ball, last, rh, rv, xm, ym):
+    x, y = ball.pos
+    rect = pygame.Rect(x, y, 30, 30)
+    ball.rect.topleft = ball.pos
+    last.rect.topleft = last.pos
+    if not rh[int(ball.road_h)].colliderect(rect) and not rv[int(ball.road_v)].colliderect(rect) \
+            and not (ball.pos[0] < 100 and ball.pos[1] <= 200) and not (rh[ball.road_h - 1].colliderect(rect) or rv[ball.road_v - 1].colliderect(rect)):
+        if rh[int(last.road_h)].colliderect(last.rect):
+            x = abs(last.pos[0])
+            y = last.pos[1] + 30
+            ball.rect.topleft = [x, y]
+            ball.road_v -= 1
+            ball.x_move = 0
+            ball.y_move = ball.speed * ym[ball.road_h + int(ball.road_v)]
+            if not rv[int(ball.road_v)].colliderect(ball.rect):
+                y = last.pos[1] - 30
+        else:
+            x = last.pos[0] - 30
+            y = abs(last.pos[1])
+            ball.rect.topleft = [x, y]
+            ball.road_h -= 1
+            ball.y_move = 0
+            ball.x_move = ball.speed * xm[ball.road_h + int(ball.road_v)]
+            if not rh[int(ball.road_h)].colliderect(ball.rect):
+                x = last.pos[0] + 30
+    return [x, y]
+
+
+def map2_correction(ball, last, map):
+    if map == 1 and not ball.move:
+        print(ball.pos)
+        # print("relocate")
+    if map == 1 and ball.pos[0] < 85 and not ball.move:
+        ball.pos[1] -= 120
+        ball.pos[0] = last.pos[0] + 30
 
 
 def game(map, level):
@@ -58,12 +99,10 @@ def game(map, level):
             win = False
 
         push = -1  # the ball type to add at the end of the list
-        clock.tick(60)
+        clock.tick(20)
         start, end = 0, 0
-        # the bottom background
-        window.blit(load("backgrounds/" + str(map) + "a.png"), (0, 0))
-        # move the balls along the path, detect collision
-        for count in range(len(ball_list)):
+        window.blit(load("backgrounds/" + str(map) + "a.png"), (0, 0))  # the bottom background
+        for count in range(len(ball_list)):  # move the balls along the path, detect collision
             ball = ball_list[count]
             length = len(ball_list)
             ball.rect.topleft = ball.pos
@@ -96,12 +135,18 @@ def game(map, level):
                     for _ in range(int(speed)):
                         speedup = change_move(ball, speedup)
                         ball.shooter_move(True)
-                elif count + 1 == length or (ball_list[count + 1].move and dist(ball_list[count + 1].pos, ball.pos) <= 30):
+                elif count + 1 == length or (
+                        ball_list[count + 1].move and dist(ball_list[count + 1].pos, ball.pos) <= 30):
                     for j in range(count, -1, -1):
                         if j + 1 == length or dist(ball_list[j].pos, ball_list[j + 1].pos) <= 30:
                             ball_list[j].move = True
                         else:
                             break
+                if map == 1 and not ball.move and ball.pos[0] < 85:
+                    print(ball.pos)
+                    map2_correction(ball, ball_list[count - 1], map)
+                    print(ball.pos)
+                    print()
                 ball.draw(window)
 
         if speedup:
@@ -117,14 +162,16 @@ def game(map, level):
             new_ball = pokeballs(push, x, y, last.rotate, last.x_move, last.y_move)
             new_ball.road_h, new_ball.road_v = last.road_h, last.road_v
             new_ball.speed, new_ball.move, new_ball.angle = last.speed, last.move, last.angle
-            new_ball.draw(window)
             ball_list.insert(add_index + 1, new_ball)
-
+            ball = ball_list[add_index + 1]
+            last = ball_list[add_index]
+            if map == 0:
+                ball.pos = add_correction(ball, last, horizRoads1, vertRoads1, hmove, vmove)
+            elif map == 2:
+                ball.pos = add_correction(ball, last, horizRoads3, vertRoads3, horizRoadsMove, vertRoadsMove)
         window.blit(load("backgrounds/" + str(map) + "b.png"), (0, 0))
 
         if end - start + 1 >= 3:
-            # deleted = ball_list[start].type
-            # balls_exist.remove(ball_list[start].type)
             if end != len(ball_list) - 1:
                 for i in range(0, start):
                     ball_list[i].move = False

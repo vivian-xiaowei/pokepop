@@ -60,7 +60,6 @@ class pokeballs:
 
     def shooter_move(self, angle=False):
         x, y = self.pos
-
         self.pos = [x + self.x_move, y + self.y_move]
         if angle:
             if self.x_move > 0:
@@ -80,13 +79,3 @@ class pokeballs:
         self.ball_image = pygame.transform.rotate(ball_images[self.type][int(self.rotate)], self.angle)
         self.rect = self.ball_image.get_rect()
         window.blit(self.ball_image, self.pos)
-
-    def move2(self, direction, speed):
-        self.pos[direction] += speed
-        if self.x_move > 0 and direction == 0:
-            self.angle = 90
-        elif self.x_move < 0 and direction == 0:
-            self.angle = 270
-        elif self.y_move > 0 and direction == 1:
-            self.angle = 0
-        self.roll(abs(self.x_move) / 7)

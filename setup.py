@@ -20,10 +20,10 @@ map2_animation = []
 map3_animation = []
 
 for i in range(1, 5):
-    map1_animation.append(transform.scale(load("level animation/leaf" + str(i) + ".png"), (80, 110)))
-    map2_animation.append(transform.scale(load("level animation/cactus" + str(i) + ".png"), (100, 120)))
+    map1_animation.append(transform.scale(load("level/leaf" + str(i) + ".png"), (80, 110)))
+    map2_animation.append(transform.scale(load("level/cactus" + str(i) + ".png"), (100, 120)))
 for i in range(1, 9):
-    map3_animation.append(transform.scale(load("level animation/cube" + str(i) + ".png"), (100, 103)))
+    map3_animation.append(transform.scale(load("level/cube" + str(i) + ".png"), (100, 103)))
 
 animations = [map1_animation, map2_animation, map3_animation]
 
@@ -36,7 +36,7 @@ index=0
 image=map1_animation[0]
 numbers=[]
 for i in range(1,7):
-    numbers.append(transform.scale(load("level animation/Level " + str(i) + ".png"), (25, 50)))
+    numbers.append(transform.scale(load("level/Level " + str(i) + ".png"), (25, 50)))
 
 signs = []
 for i in range(1, 4):
@@ -45,5 +45,5 @@ for i in range(1, 4):
 sign_pos = [[280, 300], [700, 300], [500, 550]]
 sign_size = [[230, 160], [232, 129], [204, 235]]
 
-back_button = load("button/back.png")
-back_button = transform.scale(back_button, (75, 75))
+back_button = load("level/back.png")
+back_button = transform.scale(back_button, (75, 70))

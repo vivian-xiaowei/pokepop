@@ -15,6 +15,8 @@ road4 = draw.line(window, (0, 0, 0), (left, middle), (left, bottom), 1)  # lower
 ending1 = pygame.draw.line(window, (0, 0, 0), (885, 600), (885, 615), 1)
 horizRoads1 = [road1, road2, road5]
 vertRoads1 = [road3, road4]
+hmove = [1, 0, -1, 0, 1]
+vmove = [0, 1, 0, 1, 0]
 
 # map 2: horizontal lines top to bottom
 road1 = pygame.draw.line(window, (0, 0, 0), (50, 100), (930, 100), 1)
@@ -35,28 +37,26 @@ road6 = pygame.draw.line(window, (0, 0, 0), (700, 275), (700, 400), 1)
 ending3 = pygame.draw.line(window, (0, 0, 0), (685, 430), (695, 430), 1)
 horizRoads3 = [road1, road2, road3]
 vertRoads3 = [road4, road5, road6]
+horizRoadsMove = [1, 0, -1, 0, 1, 0]
+vertRoadsMove = [0, 1, 0, -1, 0, 1]
+horizontals = [horizRoads1, horizRoads2, horizRoads3]
+verticles = [vertRoads1, None, vertRoads3]
 
-multiplier = 1
 
 
 def map1(ball, speeding=True):
     horizRoads = horizRoads1
     vertRoads = vertRoads1
-    speed = abs(ball.x_move) + abs(ball.y_move)
+    rect = ball.rect
+    speed_collide = speeding and ((ball.y_move == ball.speed and ball.pos[1] + 30 >= bottom) or (ball.x_move == -1 * ball.speed and ball.pos[0] <= left))
 
-    if ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(vertRoads[int(ball.road_v)]) \
-            or (ball.y_move == speed and ball.pos[1] + 30 >= bottom) or (ball.x_move == -1 * speed and ball.pos[0] <= left):
-        ball.y_move = speed - ball.y_move
-        if ball.pos[0] > WIN_X / 2:
-            ball.x_move -= speed
-        else:
-            ball.x_move += speed
-        if ball.road_v == 1.5:
-            ball.road_v = 0
-        else:
-            ball.road_v += 0.5
-        if ball.road_h + 1 < len(horizRoads) and ball.y_move == 3:
+    if ball.road_h < 3 and ball.road_v < 2 and rect.colliderect(horizRoads[ball.road_h]) and rect.colliderect(vertRoads[int(ball.road_v)]) or speed_collide:
+        if (ball.road_h == 1 and ball.pos[0] >= 888) or (ball.road_h == 2 and ball.pos[0] <= 111):
+            ball.road_v += 1
+        if ball.road_h + 1 < len(horizRoads) and ball.y_move == 0:
             ball.road_h += 1
+        ball.y_move = ball.speed * vmove[ball.road_h + ball.road_v]
+        ball.x_move = ball.speed * hmove[ball.road_h + ball.road_v]
     elif ending1.colliderect(ball):
         return True
     elif ball.pos[0] >= 990:
@@ -80,21 +80,21 @@ def map2(ball, speeding=True):
 def map3(ball, speeding=True):
     horizRoads = horizRoads3
     vertRoads = vertRoads3
-    horizRoadsMove = [1, -1, 1]
-    vertRoadsMove = [1, -1, 1]
 
-    if ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(vertRoads[ball.road_v]) \
-            or (int(ball.pos[1]) == 263 and ball.pos[0] == 672) or (int(ball.pos[1]) == 263 and ball.pos[0] == 75) \
-            or (int(ball.pos[1]) == 638 and ball.pos[0] == 75):
+    speed_collide = speeding and ((int(ball.pos[1]) == 263 and ball.pos[0] == 672) or (int(ball.pos[1]) == 263 and ball.pos[0] == 75) or (int(ball.pos[1]) == 638 and ball.pos[0] == 75))
+
+    if ball.road_h < 3 and ball.road_v < 3 and ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(
+            vertRoads[ball.road_v]) or speed_collide:
         if WIN_Y / WIN_X + 1 >= (WIN_Y - ball.pos[1]) / ball.pos[0] >= WIN_Y / WIN_X - 0.1:
-            if ball.road_h + 1 < len(horizRoads):
-                ball.road_h += 1
-            else:
-                ball.road_h = 0
+            # if ball.road_h + 1 < len(horizRoads):
+            ball.road_h += 1
+            # else:
+            #     ball.road_h = 0
         else:
+            # if ball.road_v + 1 < len(vertRoads):
             ball.road_v += 1
-        ball.x_move = (ball.speed - abs(ball.x_move)) * horizRoadsMove[int(ball.road_h)]
-        ball.y_move = (ball.speed - abs(ball.y_move)) * vertRoadsMove[int(ball.road_v)]
+        ball.x_move = ball.speed * horizRoadsMove[ball.road_h + ball.road_v]  # * horizRoadsMove[int(ball.road_h)]
+        ball.y_move = ball.speed * vertRoadsMove[ball.road_h + ball.road_v]  # * vertRoadsMove[int(ball.road_v)]
     elif ending3.colliderect(ball):
         ball.x_move = 0
         ball.y_move = 0
