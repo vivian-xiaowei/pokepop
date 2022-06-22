@@ -4,11 +4,8 @@ from gameplay import *
 from setup import *
 import sys
 
-local_sign = [signs[0], signs[1], signs[2]]
-load_button = []
+
 map, level = 0, 0
-for i in range(4):
-    load_button.append(transform.scale(load("aftergame/" + str(i) + ".png"), (80, 80)))
 
 
 def try_exit(event):
@@ -41,7 +38,6 @@ def choose_map():
         sign = local_sign[i]
         window.blit(sign, (sign_pos[i][0] - sign.get_width() / 2, sign_pos[i][1] - sign.get_height() / 2))
     pygame.display.update()
-    level = 0
 
 
 def colourCollision(colour, mouse):
@@ -56,51 +52,53 @@ def choose_level():
     width, height = animation[0].get_width(), animation[0].get_height()
     count = 0
     coordinates = [(250, 200), (WIN_X / 2, 200), (750, 200), (250, 350), (WIN_X / 2, 350), (750, 350)]
-    indexes = [0, 0, 0, 0, 0, 0]
+    indexes = []
+    for i in range(6):
+        indexes.append(int(level_lock[map][i]) - 1)
     offset = [(-10, -25), (-15, -40), (-5, -30)]
     buttons = []
     loop = True
-    switch = None
     transition = 10
     while loop:
+        clock.tick(60)
         if transition > 0:
             transition -= 1
-        clock.tick(60)
         window.blit(load("level/" + str(map) + ".png"), (0, 0))
         back = window.blit(back_button, (50, 30))
         for event in pygame.event.get():
             try_exit(event)
             if event.type == pygame.MOUSEBUTTONDOWN and back.collidepoint(mouse.get_pos()):
-                switch = "map"
                 loop = False
-        count += len(animation) / 50
+        count += len(animation) / 30
         if int(count) > len(animation) - 1:
             count = 0
-        for i in range(0, 6):
+        for i in range(6):
             pos = (coordinates[i][0] - width / 2, coordinates[i][1] - height / 2)
-            buttons.append(window.blit(animation[indexes[i]], pos))
+            if indexes[i] >= 0:
+                buttons.append(window.blit(animation[indexes[i]], pos))
+            else:
+                buttons.append(window.blit(grey[map], pos))
+            window.blit(numbers[i], (coordinates[i][0] + offset[map][0], coordinates[i][1] + offset[map][1]))
 
-        for i in range(0, 6):
-            if buttons[i].collidepoint(pygame.mouse.get_pos()):
+        for i in range(6):
+            if buttons[i].collidepoint(pygame.mouse.get_pos()) and indexes[i] >= 0:
                 indexes[i] = int(count)
                 if pygame.mouse.get_pressed()[0] and transition == 0:
-                    level = i + 1
+                    level = i
                     loop = False
-            else:
-                indexes[level] = 0
-        for i in range(0, 6):
-            window.blit(numbers[i], (coordinates[i][0] + offset[map][0], coordinates[i][1] + offset[map][1]))
+            elif indexes[i] >= 0:
+                indexes[i] = 0
         pygame.display.update()
-    if switch != "map":
-        blackout()
+    if level != -1:
+        blackout(level)
 
 
-def blackout():  # transition between choose map and game
+def blackout(level):  # transition between choose map and game
     fill = pygame.Surface((WIN_X, WIN_Y))
     fill.fill((0, 0, 0))
     speed = 0.1
     alpha = 20
-    for i in range(0, 100):
+    for i in range(100):
         fill.set_alpha(alpha)
         alpha -= speed
         window.blit(fill, (0, 0))
@@ -110,9 +108,11 @@ def blackout():  # transition between choose map and game
 
 
 def aftergame(win, mapC, levelC):
-    global level, map
+    global level, map, level_lock
     map = mapC
     level = levelC
+    if level != 5 and level_lock[map][level + 1] == False and win:
+        level_lock[map][level + 1] = True
     over = True
     buttons = []
     draw.rect(window, (97, 56, 29), (250, 170, 500, 400), 0, 15, 15, 15, 15)
@@ -146,11 +146,11 @@ def aftergame(win, mapC, levelC):
                     over = False
                     choose_level()
                 elif buttons[2].collidepoint(mouse):
-                    blackout()
+                    blackout(level)
                     over = False
                 elif len(buttons) == 4 and buttons[3].collidepoint(mouse):
                     level += 1
-                    blackout()
+                    blackout(level)
                     over = False
 
 

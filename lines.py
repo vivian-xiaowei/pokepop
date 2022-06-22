@@ -49,7 +49,6 @@ def map1(ball, speeding=True):
     vertRoads = vertRoads1
     rect = ball.rect
     speed_collide = speeding and ((ball.y_move == ball.speed and ball.pos[1] + 30 >= bottom) or (ball.x_move == -1 * ball.speed and ball.pos[0] <= left))
-
     if ball.road_h < 3 and ball.road_v < 2 and rect.colliderect(horizRoads[ball.road_h]) and rect.colliderect(vertRoads[int(ball.road_v)]) or speed_collide:
         if (ball.road_h == 1 and ball.pos[0] >= 888) or (ball.road_h == 2 and ball.pos[0] <= 111):
             ball.road_v += 1

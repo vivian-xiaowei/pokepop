@@ -23,7 +23,7 @@ def generate_ball(level, map=0):
     ball = []
     position = 0
     type = randint(0, 6)
-    while position <= 40:
+    while position <= 40 + 3 * level:
         balls_exist.add(type)
         for j in range(randint(1, 8 - level)):
             if map == 2:

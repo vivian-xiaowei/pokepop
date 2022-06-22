@@ -14,13 +14,10 @@ from balls import *
 def find_length(ball_list, count, push, toadd):
     start, end = count, count
     while start > 0 and ball_list[start].type == ball_list[start - 1].type and (ball_list[start].move ==
-                                                                                ball_list[start - 1].move or dist(
-                ball_list[start].pos, ball_list[start - 1].pos) <= 30):
+            ball_list[start - 1].move or dist(ball_list[start].pos, ball_list[start - 1].pos) <= 30):
         start -= 1
     while end < len(ball_list) - 2 and ball_list[end].type == ball_list[end + 1].type and (ball_list[end].move ==
-                                                                                           ball_list[
-                                                                                               end + 1].move or dist(
-                ball_list[end].pos, ball_list[end + 1].pos) <= 30):
+            ball_list[end + 1].move or dist(ball_list[end].pos, ball_list[end + 1].pos) <= 30):
         end += 1
     if end == toadd - 1 and ball_list[toadd].type == ball_list[count].type:
         end += 1
@@ -29,10 +26,13 @@ def find_length(ball_list, count, push, toadd):
     return start, end
 
 
-def find_stopped(ball_list, start):
-    while start + 1 < len(ball_list) and not ball_list[start + 1].move and dist(ball_list[start].pos,
-                                                                                ball_list[start + 1].pos) <= 30:
-        start += 1
+def find_stopped(ball_list, start, back=True):
+    if back:
+        while start + 1 < len(ball_list) and not ball_list[start + 1].move and dist(ball_list[start].pos, ball_list[start + 1].pos) <= 30:
+            start += 1
+    else:
+        while start - 1 >= 0 and dist(ball_list[start].pos, ball_list[start - 1].pos) <= 30:
+            start -= 1
     return start
 
 
@@ -41,7 +41,7 @@ def add_correction(ball, last, rh, rv, xm, ym):
     rect = pygame.Rect(x, y, 30, 30)
     ball.rect.topleft = ball.pos
     last.rect.topleft = last.pos
-    if not rh[int(ball.road_h)].colliderect(rect) and not rv[int(ball.road_v)].colliderect(rect) \
+    if ball.road_h < len(rh) and ball.road_v < len(rv) and not rh[int(ball.road_h)].colliderect(rect) and not rv[int(ball.road_v)].colliderect(rect) \
             and not (ball.pos[0] < 100 and ball.pos[1] <= 200) and not (rh[ball.road_h - 1].colliderect(rect) or rv[ball.road_v - 1].colliderect(rect)):
         if rh[int(last.road_h)].colliderect(last.rect):
             x = abs(last.pos[0])
@@ -64,13 +64,12 @@ def add_correction(ball, last, rh, rv, xm, ym):
     return [x, y]
 
 
-def map2_correction(ball, last, map):
-    if map == 1 and not ball.move:
+def map2_correction(list, count):
+    diff = 88 - list[count].pos[0]
+    for i in range(find_stopped(list, count, False), count + 1):
+        ball = list[i]
+        ball.pos[0] += diff
         print(ball.pos)
-        # print("relocate")
-    if map == 1 and ball.pos[0] < 85 and not ball.move:
-        ball.pos[1] -= 120
-        ball.pos[0] = last.pos[0] + 30
 
 
 def game(map, level):
@@ -90,7 +89,8 @@ def game(map, level):
     elif map == 2:
         change_move = map3
 
-    while ingame:
+    while ingame or len(fly) != 0:
+        clock.tick(30)
         if len(ball_list) == 0:
             ingame = False
             win = True
@@ -99,9 +99,12 @@ def game(map, level):
             win = False
 
         push = -1  # the ball type to add at the end of the list
-        clock.tick(20)
         start, end = 0, 0
         window.blit(load("backgrounds/" + str(map) + "a.png"), (0, 0))  # the bottom background
+        if len(ball_list) != 0 and ball_list[0].pos[0] < 90 and ball_list[0].pos[1] <= 200:
+            diff = 90 - ball_list[0].pos[0]
+            for ball in ball_list:
+                ball.pos[0] += diff
         for count in range(len(ball_list)):  # move the balls along the path, detect collision
             ball = ball_list[count]
             length = len(ball_list)
@@ -143,10 +146,7 @@ def game(map, level):
                         else:
                             break
                 if map == 1 and not ball.move and ball.pos[0] < 85:
-                    print(ball.pos)
-                    map2_correction(ball, ball_list[count - 1], map)
-                    print(ball.pos)
-                    print()
+                    map2_correction(ball_list, count)
                 ball.draw(window)
 
         if speedup:
@@ -169,8 +169,9 @@ def game(map, level):
                 ball.pos = add_correction(ball, last, horizRoads1, vertRoads1, hmove, vmove)
             elif map == 2:
                 ball.pos = add_correction(ball, last, horizRoads3, vertRoads3, horizRoadsMove, vertRoadsMove)
+            if not (ball.pos[0] < 100 and ball.pos[1] <= 200):
+                ball.draw(window)
         window.blit(load("backgrounds/" + str(map) + "b.png"), (0, 0))
-
         if end - start + 1 >= 3:
             if end != len(ball_list) - 1:
                 for i in range(0, start):
@@ -187,7 +188,7 @@ def game(map, level):
                 fly[len(fly) - 1].x_move = run / diff * 20
                 fly[len(fly) - 1].y_move = rise / diff * 20
                 front = back
-                back = pokeballs(pick_ball(), 0, 0, 0, 0, 0)
+                back = pokeballs(pick_ball(back.type), 0, 0, 0, 0, 0)
 
         if not fly == []:
             out = 0
@@ -202,6 +203,6 @@ def game(map, level):
         front.type = pick_ball(front.type)
         back.type = pick_ball(back.type)
         draw_shooter(map, window, front, back, shooter_pos[map], speed)
-        balls.balls_exist = set()
+        balls.balls_exist.clear()
         pygame.display.update()
     aftergame(win, map, level)
