@@ -1,11 +1,11 @@
 # https://stackoverflow.com/questions/70419688/find-size-of-rotated-rectangle-that-covers-orginal-rectangle
 
 import pygame.draw
-from pygame.image import load
-from pygame.time import wait
 import balls
 from main import try_exit
 from main import aftergame
+from main import choose_level
+from main import choose_map
 from lines import *
 from shooter import *
 from balls import *
@@ -74,6 +74,42 @@ def map2_correction(ball_list, count):
         print(ball.pos)
 
 
+def pause():
+    window.blit(load("backgrounds/" + str(map) + "c.png"), (0, 0))
+    grey = pygame.Surface((WIN_X, WIN_Y))
+    grey.set_alpha(100)
+    grey.fill((0, 0, 0))
+    window.blit(grey, (0, 0))
+    # window.fill(())
+    pygame.mixer.music.load("music/Map" + str(map + 1) + " Level Select Music.mp3")
+    mixer.music.set_volume(0.7)
+    pygame.mixer.music.play(-1)
+    draw.rect(window, (97, 56, 29), (250, 170, 500, 400), 0, 15, 15, 15, 15)
+    draw.rect(window, (207, 159, 111), (270, 190, 460, 360), 0, 15, 15, 15, 15)
+    window.blit(load("pause/Level.png"), (400, 240))
+    window.blit(load("pause/" + str(level + 1) + ".png"), (550, 240))
+    button_number = [0, 1, 4]
+    buttons = []
+    for i in range(3):
+        buttons.append(window.blit(load_button[button_number[i]], (460 + (len(buttons) - 1) * 130, 380)))
+    pygame.display.update()
+    while True:
+        clock.tick(30)
+        for event in pygame.event.get():
+            try_exit(event)
+            mouse = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if buttons[0].collidepoint(mouse):
+                    return False, "map"
+                elif buttons[1].collidepoint(mouse):
+                    return False, "level"
+                elif buttons[2].collidepoint(mouse):
+                    pygame.mixer.music.load("music/Map" + str(map + 1) + " Level " + str(level + 1) + " Music.mp3")
+                    mixer.music.set_volume(0.7)
+                    pygame.mixer.music.play(-1)
+                    return True, None
+
+
 def game(map, level):
     ball_list = generate_ball(level, map)  # randomly generate a list of balls
     front = pokeballs(pick_ball(), -30, -30, 0, 0, 0)  # front ball on shooter
@@ -85,6 +121,7 @@ def game(map, level):
     add_index = 0   # the position to add the ball
     ingame = True  # quit the loop if the game is finish
     win = False
+    next = None
     # refer to the moving function for the map
     if map == 0:
         change_move = map1
@@ -104,7 +141,6 @@ def game(map, level):
             win = True
         elif ball_list[len(ball_list) - 1].x_move + ball_list[len(ball_list) - 1].y_move == 0:  # player loses
             ingame = False
-            win = False
 
         push = -1  # the ball type to add at the end of the list
         start, end = 0, 0  # to store starting and ending positions of the same colour
@@ -190,9 +226,12 @@ def game(map, level):
             for i in range(start, end + 1):
                 ball_list.remove(ball_list[start])
 
+        pause_button = window.blit(load_button[5], (900, 20))
         for event in pygame.event.get():
             try_exit(event)
-            if event.type == pygame.MOUSEBUTTONUP and int(speed) == 1:
+            if event.type == pygame.MOUSEBUTTONUP and pause_button.collidepoint(mouse.get_pos()):
+                ingame, next = pause()
+            elif event.type == pygame.MOUSEBUTTONUP and int(speed) == 1:
                 run, rise = (front.pos[0] + 14 - shooter_pos[map][0], front.pos[1] + 15 - shooter_pos[map][1])
                 diff = sqrt(pow(run, 2) + pow(rise, 2))
                 fly.append(front)
@@ -217,4 +256,9 @@ def game(map, level):
         balls.balls_exist.clear()
         pygame.display.update()
     pygame.mixer.music.stop()
-    aftergame(win, level)
+    if next == "map":
+        choose_map()
+    elif next == "level":
+        choose_level()
+    else:
+        aftergame(win, level)

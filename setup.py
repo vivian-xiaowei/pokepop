@@ -45,14 +45,14 @@ for i in range(1, 4):
 
 sign_pos = [[280, 300], [700, 300], [500, 550]]
 sign_size = [[230, 160], [232, 129], [204, 235]]
+local_sign = [signs[0], signs[1], signs[2]]
 
 back_button = load("level/back.png")
 back_button = transform.scale(back_button, (75, 70))
 
-local_sign = [signs[0], signs[1], signs[2]]
 load_button = []
-for i in range(4):
-    load_button.append(transform.scale(load("aftergame/" + str(i) + ".png"), (80, 80)))
+for i in range(6):
+    load_button.append(transform.scale(load("button/" + str(i) + ".png"), (80, 80)))
 
 grey = [transform.scale(load("level/grey0.png"), (80, 110)), transform.scale(load("level/grey1.png"), (100, 120)),
         transform.scale(load("level/grey2.png"), (100, 103))]
