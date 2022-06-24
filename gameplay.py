@@ -81,49 +81,58 @@ def game(map, level):
     shooter_pos = [[500, 450], [500, 640], [280, 460]]  # the center for shooters on different maps
     fly = []  # to store balls shot out
     speedup = False  # if the ball touches the end and speed up to leave
-    speed = 6  # the number of times moving the ball
-    add_index = -1
-    ingame = True
+    speed = 6  # the number of times moving the ball at the start
+    add_index = 0   # the position to add the ball
+    ingame = True  # quit the loop if the game is finish
     win = False
-    change_move = map1
-    if map == 1:
+    # refer to the moving function for the map
+    if map == 0:
+        change_move = map1
+    elif map == 1:
         change_move = map2
-    elif map == 2:
+    else:
         change_move = map3
-
+    pygame.mixer.music.load("music/Map" + str(map + 1) + " Level " + str(level + 1) + " Music.mp3")
+    mixer.music.set_volume(0.7)
+    pygame.mixer.music.play(-1)
+    print(level)
+    # while the game is not over or there are ball flying, blit game screen
     while ingame or len(fly) != 0:
         clock.tick(30)
-        if len(ball_list) == 0:
+        if len(ball_list) == 0:  # player wins
             ingame = False
             win = True
-        elif ball_list[len(ball_list) - 1].x_move + ball_list[len(ball_list) - 1].y_move == 0:
+        elif ball_list[len(ball_list) - 1].x_move + ball_list[len(ball_list) - 1].y_move == 0:  # player loses
             ingame = False
             win = False
 
         push = -1  # the ball type to add at the end of the list
-        start, end = 0, 0
+        start, end = 0, 0  # to store starting and ending positions of the same colour
         window.blit(load("backgrounds/" + str(map) + "a.png"), (0, 0))  # the bottom background
+        # shift balls to show up faster on screen if there is no more balls
         if len(ball_list) != 0 and ball_list[0].pos[0] < 90 and ball_list[0].pos[1] <= 200:
             diff = 90 - ball_list[0].pos[0]
             for ball in ball_list:
                 ball.pos[0] += diff
-        for count in range(len(ball_list)):  # move the balls along the path, detect collision
+        # move the balls along the path, detect collision with flying balls
+        for count in range(len(ball_list)):
             ball = ball_list[count]
             length = len(ball_list)
             ball.rect.topleft = ball.pos
-            # balls off the path at the start
-            if ball.pos[0] < 100 and ball.pos[1] <= 200:
+            if ball.pos[0] < 100 and ball.pos[1] <= 200:  # balls off the path at the start
                 for _ in range(int(speed)):
                     ball.shooter_move(True)
                 ball.rotate = ball_list[count - 1].rotate
-            else:
+            else:                                         # the balls showing on the screen
                 balls.balls_exist.add(ball.type)
-                pos = ball.pos[0] + 15, ball.pos[1] + 15
+                center = ball.pos[0] + 15, ball.pos[1] + 15  # center of the ball
                 for flying in fly:
                     angle = flying.angle
-                    half = 15 * (abs(cos(angle)) + abs(sin(angle)))  # reference
-                    center = (flying.pos[0] + half, flying.pos[1] + half)
-                    if dist(pos, center) <= 30:
+                    half = 15 * (abs(cos(angle)) + abs(sin(angle)))
+                    center_f = (flying.pos[0] + half, flying.pos[1] + half)  # center of the angled ball (reference)
+                    if dist(center, center_f) <= 30:  # distance less than the ball diameter
+                        pop = pygame.mixer.Sound("music/pop.mp3")
+                        pop.play()
                         notmove = find_stopped(ball_list, count)
                         if ball.move or dist(ball_list[notmove].pos, ball_list[notmove + 1].pos) <= 60:
                             add_index = length - 1
@@ -207,4 +216,5 @@ def game(map, level):
         draw_shooter(map, window, front, back, shooter_pos[map], speed)
         balls.balls_exist.clear()
         pygame.display.update()
-    aftergame(win, map, level)
+    pygame.mixer.music.stop()
+    aftergame(win, level)

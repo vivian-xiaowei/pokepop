@@ -56,6 +56,10 @@ def choose_level():
     buttons = []
     loop = True
     transition = 10
+
+    pygame.mixer.music.load("music/Map" + str(map + 1) + " Level Select Music.mp3")
+    mixer.music.set_volume(0.7)
+    pygame.mixer.music.play(-1)
     while loop:
         clock.tick(60)
         if transition > 0:
@@ -86,11 +90,13 @@ def choose_level():
             elif indexes[i] >= 0:
                 indexes[i] = 0
         pygame.display.update()
+    pygame.mixer.music.stop()
     if level != -1:
         blackout()
 
 
 def blackout():  # transition between choose map and game
+    # global map, level
     fill = pygame.Surface((WIN_X, WIN_Y))
     fill.fill((0, 0, 0))
     speed = 0.1
@@ -105,9 +111,8 @@ def blackout():  # transition between choose map and game
     gameplay.game(map, level)
 
 
-def aftergame(win, mapC, levelC):
+def aftergame(win, levelC):
     global level, map, level_lock
-    map = mapC
     level = levelC
     if level != 5 and level_lock[map][level + 1] == False and win:
         level_lock[map][level + 1] = True
@@ -115,17 +120,24 @@ def aftergame(win, mapC, levelC):
     buttons = []
     draw.rect(window, (97, 56, 29), (250, 170, 500, 400), 0, 15, 15, 15, 15)
     draw.rect(window, (207, 159, 111), (270, 190, 460, 360), 0, 15, 15, 15, 15)
-    if win and level != 6:
+
+    if win and level != 5:
+        pygame.mixer.music.load("music/game won.wav")
+        mixer.music.set_volume(0.7)
         text = load("aftergame/Level_Completed.png")
-    elif win and level == 6:
-        text = load("aftergame/Map_Cleared.png")
-    else:
-        text = load("aftergame/Game_Over.png")
-    window.blit(text, (500 - text.get_width() / 2, 230))
-    if win and level != 6:
         for i in range(4):
             buttons.append(window.blit(load_button[i], (460 + (len(buttons) - 1.5) * 100, 400)))
+    elif win and level == 5:
+        pygame.mixer.music.load("music/game won.wav")
+        mixer.music.set_volume(0.7)
+        text = load("aftergame/Map_Cleared.png")
     else:
+        pygame.mixer.music.load("music/game over.wav")
+        mixer.music.set_volume(0.7)
+        text = load("aftergame/Game_Over.png")
+    pygame.mixer.music.play()
+    window.blit(text, (500 - text.get_width() / 2, 230))
+    if len(buttons) == 0:
         for i in range(3):
             buttons.append(window.blit(load_button[i], (460 + (len(buttons) - 1) * 130, 400)))
     pygame.display.update()

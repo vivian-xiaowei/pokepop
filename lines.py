@@ -43,7 +43,6 @@ horizontals = [horizRoads1, horizRoads2, horizRoads3]
 verticles = [vertRoads1, None, vertRoads3]
 
 
-
 def map1(ball, speeding=True):
     horizRoads = horizRoads1
     vertRoads = vertRoads1
@@ -85,12 +84,8 @@ def map3(ball, speeding=True):
     if ball.road_h < 3 and ball.road_v < 3 and ball.rect.colliderect(horizRoads[ball.road_h]) and ball.rect.colliderect(
             vertRoads[ball.road_v]) or speed_collide:
         if WIN_Y / WIN_X + 1 >= (WIN_Y - ball.pos[1]) / ball.pos[0] >= WIN_Y / WIN_X - 0.1:
-            # if ball.road_h + 1 < len(horizRoads):
             ball.road_h += 1
-            # else:
-            #     ball.road_h = 0
         else:
-            # if ball.road_v + 1 < len(vertRoads):
             ball.road_v += 1
         ball.x_move = ball.speed * horizRoadsMove[ball.road_h + ball.road_v]  # * horizRoadsMove[int(ball.road_h)]
         ball.y_move = ball.speed * vertRoadsMove[ball.road_h + ball.road_v]  # * vertRoadsMove[int(ball.road_v)]

@@ -3,6 +3,7 @@ from pygame import *
 from pygame.image import load
 
 pygame.init()
+mixer.init()
 clock = time.Clock()
 
 # setting up window size

@@ -5,9 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17247467-d9d7-4f2e-9ccf-2120762d0b85" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/music/Map1 Level 1 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map1 Level 2 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map1 Level 3 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map1 Level 4 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map1 Level 5 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map1 Level 6 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map1 Level Select Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map2 Level 1 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map2 Level 2 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map2 Level 3 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map2 Level 4 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map2 Level 5 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map2 Level 6 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map2 Level Select Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map3 Level 1 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map3 Level 2 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map3 Level 3 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map3 Level 4 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map3 Level 5 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map3 Level 6 Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/Map3 Level Select Music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/game over.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/game won.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/pop.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/theme music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/theme song pokepop.mp3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/balls.py" beforeDir="false" afterPath="$PROJECT_DIR$/balls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gameplay.py" beforeDir="false" afterPath="$PROJECT_DIR$/gameplay.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lines.py" beforeDir="false" afterPath="$PROJECT_DIR$/lines.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
     </list>
